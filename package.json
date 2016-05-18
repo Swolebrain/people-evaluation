@@ -1,0 +1,22 @@
+{
+  "name": "people-evaluation",
+  "version": "1.0.0",
+  "description": "Front end of app to provide evaluations for people",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/swolebrain/people-evaluation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/swolebrain/people-evaluation/issues"
+  },
+  "homepage": "https://github.com/swolebrain/people-evaluation#readme",
+  "dependencies": {
+    "expect": "^1.20.1"
+  }
+}
