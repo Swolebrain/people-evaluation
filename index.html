@@ -11,93 +11,116 @@
     </div>
     <script src="js/auxfunctions.js"></script>
     <script src="js/data.js"></script>
+    <script src="js/reducers.js"></script>
+    <script src="js/tests.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.16/browser.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script type="text/babel">
-    var ScoreCardItem = React.createClass({
-      render: function(){
-        return (
-          <div className="sc-item">
-            <div className="sc-name">
-              {this.props.item.name}
-            </div>
-            <div className="sc-score">
-              {this.props.item.score}
-            </div>
-            <div className="sc-weight">
-              {this.props.item.weight}
-            </div>
-          </div>
-        );
-      }
-    });
-    var ScoreCardPanel = React.createClass({
-      render: function(){
-        var scoreCardItems = this.props.scorecard.map( (e) =>
-          <ScoreCardItem item={e}></ScoreCardItem>
-        );
-        return (
-          <div>
-            {scoreCardItems}
-          </div>
-        );
-      }
-    });
-    var EvaluationPanel = React.createClass({
-      render: function(){
-        var corevalz = [];
-        for (var k in this.props.coreVals){
-          corevalz.push(<li className="core-li" key={k}>
-            {k}<br />
-            <input type="number" min="1" max="10" value={this.props.coreVals[k]}/>
-          </li>  );
-        }
-        return (
-          <div>
-            <h1>{this.props.name}</h1>
-            <h2>Core Values</h2>
-            <ul className="core-values-panel">
-              {corevalz}
-            </ul>
-            <hr />
-            <h2>Score Card</h2>
-            <ScoreCardPanel scorecard={this.props.scorecard}></ScoreCardPanel>
-          </div>
-
-        )
-      }
-    });
-      var EvaluationList = React.createClass({
+      var ScoreCardItem = React.createClass({
         render: function(){
-          var evaluationPanels = this.props.evals.map(function(e){
-            return (
-              <EvaluationPanel key={generateId(e.name)} name={e.name}
-                scorecard={e.scorecard} coreVals={e.coreVals} />
-              );
-          });
           return (
-            <div className="evaluation-list-row">
-              {evaluationPanels}
+            <div className="sc-item">
+              <div className="sc-name">
+                {this.props.item.name}
+              </div>
+              <div className="sc-score">
+                {this.props.item.score}
+              </div>
+              <div className="sc-weight">
+                {this.props.item.weight}
+              </div>
             </div>
           );
         }
       });
-      var EvaluationApp = React.createClass({
+      var ScoreCardPanel = React.createClass({
         render: function(){
+          var scoreCardItems = this.props.scorecard.map( (e) =>
+            <ScoreCardItem item={e} key={generateId(e.name)}></ScoreCardItem>
+          );
           return (
             <div>
-              <EvaluationList coreVals={this.props.coreVals} evals={this.props.evals}/>
+              {scoreCardItems}
             </div>
-
           );
         }
       });
-      ReactDOM.render(
-        <EvaluationApp coreVals={coreValues} evals={evals}/>,
-        document.getElementById("app-container")
-      );
+      var CoreValueItem = React.createClass({
+        _handleCoreValChange: function(e){
+          console.log("boo");
+        },
+        render: function(){
+            return (
+              <li className="core-li" key={this.props.k}>
+                {this.props.k}<br />
+                <input type="number" min="1" max="10" value={this.props.val}
+                keyName={this.props.k} employee={this.props.employee} onChange={this._handleCoreValChange} />
+              </li>
+            );
+        }
+      });
+      var EvaluationPanel = React.createClass({
+        render: function(){
+          var corevalz = [];
+          for (var k in this.props.coreVals){
+            corevalz.push( <CoreValueItem key={k} k={k}
+              employee={this.props.name} val={this.props.coreVals[k]}></CoreValueItem> );
+          }
+          return (
+            <div>
+              <h1>{this.props.name}</h1>
+              <h2>Core Values</h2>
+              <ul className="core-values-panel">
+                {corevalz}
+              </ul>
+              <hr />
+              <h2>Score Card</h2>
+              <ScoreCardPanel employee={this.props.name}
+              scorecard={this.props.scorecard}></ScoreCardPanel>
+            </div>
+
+          )
+        }
+      });
+        var EvaluationList = React.createClass({
+          render: function(){
+            var selfProps = this.props;
+            var evaluationPanels = this.props.evals.map(function(e){
+              return (
+                <EvaluationPanel key={generateId(e.name)} name={e.name}
+                  scorecard={e.scorecard} coreVals={e.coreVals} />
+                );
+            });
+            return (
+              <div className="evaluation-list-row">
+                {evaluationPanels}
+              </div>
+            );
+          }
+        });
+        var EvaluationApp = React.createClass({
+          getInitialState: function(){
+            return {
+              coreVals:coreValues,
+              evals:evals
+            };
+          },
+          render: function(){
+            return (
+              <div>
+                <EvaluationList coreVals={this.state.coreVals} evals={this.state.evals}
+                />
+              </div>
+
+            );
+          }
+        });
+        ReactDOM.render(
+          <EvaluationApp />,
+          document.getElementById("app-container")
+        );
     </script>
   </body>
 </html>
