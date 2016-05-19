@@ -1,9 +1,12 @@
-function generateId(name){
-  return name.toLowerCase().split(" ").join("-");
-}
+window.deepFreeze = require('../node_modules/deep-freeze');
+window.expect = require('../node_modules/expect');
+
+window.generateId = (name) => name.toLowerCase().split(" ").join("-");
+
 
 //Object.assign polyfill
 if (!Object.assign) {
+  console.log("running Object.assign polyfill");
   Object.defineProperty(Object, 'assign', {
     enumerable: false,
     configurable: true,

@@ -2,9 +2,15 @@
   "name": "people-evaluation",
   "version": "1.0.0",
   "description": "Front end of app to provide evaluations for people",
-  "main": "index.html",
+  "main": "js/dist.js","dependencies": {
+    "deep-freeze": "0.0.1",
+    "expect": "^1.20.1"
+  },
+  "devDependencies": {
+    "watchify": "^3.7.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "watch": "watchify js/auxfunctions.js -o js/dist.js -dv"
   },
   "repository": {
     "type": "git",
@@ -15,8 +21,5 @@
   "bugs": {
     "url": "https://github.com/swolebrain/people-evaluation/issues"
   },
-  "homepage": "https://github.com/swolebrain/people-evaluation#readme",
-  "dependencies": {
-    "expect": "^1.20.1"
-  }
+  "homepage": "https://github.com/swolebrain/people-evaluation#readme"
 }

@@ -11,9 +11,9 @@ var evals = [
 	{
 	    name: "lidia bravo",
 	    scorecard: [
-				{ name: "Tames the Diamond D beast", score: 9, weight: .50},
-				{ name: "Has incredible patience", score: 9, weight: .25 },
-				{ name: "Schedules and organizes all classes", score: 9, weight: .25 }
+				{ name: "Tames the Diamond D beast", score: 9, weight: 0.50},
+				{ name: "Has incredible patience", score: 9, weight: 0.25 },
+				{ name: "Schedules and organizes all classes", score: 9, weight: 0.25 }
 			],
 	    coreVals: {
 				SS: 9,
@@ -27,9 +27,9 @@ var evals = [
 	{
 	    name: "eliezer tavarez",
 	    scorecard: [
-				{ name: "front double bicep", score: 9, weight: .50},
-				{ name: "lat spread", score: 9, weight: .25 },
-				{ name: "most muscular", score: 9, weight: .25 }
+				{ name: "front double bicep", score: 9, weight: 0.50},
+				{ name: "lat spread", score: 9, weight: 0.25 },
+				{ name: "most muscular", score: 9, weight: 0.25 }
 			],
 	    coreVals: {
 				SS: 9,
