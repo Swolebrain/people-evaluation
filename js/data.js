@@ -1,3 +1,5 @@
+//THIS IS THE DEFAULT STUFF
+
 var coreValues = {
 	SS: "self starter",
 	Acc: "Accountability for task completion",

@@ -64,5 +64,71 @@ expect(newState3.evals[0]).toEqual({
       Giv: 8
     }
 });
-console.log(newState3);
+
+//test 4: add new scorecard
+let newState4 = reducer(state, {
+  type: 'ADD_EVAL',
+  sc: 	{
+  	    name: "Victor Moreno",
+  	    scorecard: [
+  				{ name: "Do you even lift", score: 0, weight: 0},
+  				{ name: "eat sleep code", score: 0, weight: 0 },
+  				{ name: "mad max fury road", score: 0, weight: 0 }
+  			]
+  	}
+});
+expect(newState4.evals).toEqual(
+  [
+  	{
+  	    name: "lidia bravo",
+  	    scorecard: [
+  				{ name: "Tames the Diamond D beast", score: 9, weight: 0.50},
+  				{ name: "Has incredible patience", score: 9, weight: 0.25 },
+  				{ name: "Schedules and organizes all classes", score: 9, weight: 0.25 }
+  			],
+  	    coreVals: {
+  				SS: 9,
+  				Acc: 10,
+  				Asp: 5,
+  				Com: 9,
+  				Exx: 9,
+  				Giv: 8
+  			}
+  	},
+  	{
+  	    name: "eliezer tavarez",
+  	    scorecard: [
+  				{ name: "front double bicep", score: 9, weight: 0.50},
+  				{ name: "lat spread", score: 9, weight: 0.25 },
+  				{ name: "most muscular", score: 9, weight: 0.25 }
+  			],
+  	    coreVals: {
+  				SS: 9,
+  				Acc: 10,
+  				Asp: 5,
+  				Com: 9,
+  				Exx: 9,
+  				Giv: 8
+  			}
+  	},
+    {
+    	    name: "Victor Moreno",
+    	    scorecard: [
+    				{ name: "Do you even lift", score: 0, weight: 0},
+    				{ name: "eat sleep code", score: 0, weight: 0 },
+    				{ name: "mad max fury road", score: 0, weight: 0 }
+    			],
+    	    coreVals: {
+    				SS: 0,
+    				Acc: 0,
+    				Asp: 0,
+    				Com: 0,
+    				Exx: 0,
+    				Giv: 0
+    			}
+    	}
+  ]
+);
+
+
 console.log("tests passed");

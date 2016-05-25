@@ -9,13 +9,14 @@
     <div id="app-container">
 
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.16/browser.js"></script>
     <script src="js/dist.js"></script>
     <script src="js/data.js"></script>
     <script src="js/reducers.js"></script>
     <script src="js/tests.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.5.2/redux.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.6.16/browser.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script type="text/babel">
       var ScoreCardItem = React.createClass({
@@ -49,14 +50,17 @@
       });
       var CoreValueItem = React.createClass({
         _handleCoreValChange: function(e){
-          console.log("boo");
+          store.dispatch({
+            type: 'COREVAL_CHANGE', employee: this.props.employee,
+            newVal: e.target.value, k: this.props.k
+          });
         },
         render: function(){
             return (
               <li className="core-li" key={this.props.k}>
                 {this.props.k}<br />
                 <input type="number" min="1" max="10" value={this.props.val}
-                keyName={this.props.k} employee={this.props.employee} onChange={this._handleCoreValChange} />
+                keyName={this.props.k} onChange={this._handleCoreValChange} />
               </li>
             );
         }
@@ -84,7 +88,87 @@
           )
         }
       });
-        var EvaluationList = React.createClass({
+      var SCInput = React.createClass({
+        /*_handleOnChange: function(e){
+          var curIDStub = e.target.id.substring(0, e.target.id.length-1);
+          var curID = Number(e.target.id.substring(e.target.id.length-1));
+          if (e.target.value.length === 0){
+            $(e.target).siblings().toArray().reverse().reduce( (p, c, i) => {
+              if (p === i && $(c).val().length === 0 ){
+                $(c).addClass("hidden");
+                return p+1;
+              }else{
+                return p;
+              }
+            }, 0);
+          }
+          else{
+            //unhide next one
+            $(`#${curIDStub}${curID+1}`).removeClass('hidden');
+          }
+        },*/
+        render: function(){
+          var cls = this.props.k!=0?"block-input":"block-input";
+          var id = `sc-item-${this.props.k}`;
+          return (
+            <input type="text" className={cls} id={id} ref={ (input) => this.input = input }/>
+          );
+        }
+      });
+      var EvaluationCreator = React.createClass({
+        _createEval: function(){
+          let scorecard = [];
+          for (var k in this.inputs){
+            var txtVal = this.inputs[k].input.value;
+            if (txtVal.length > 0){
+              scorecard.push({
+                name: txtVal,
+                score: 0,
+                weight: 0
+              });
+            }
+          }
+          let name = this.name.value;
+          const action = {
+            type: "ADD_EVAL",
+            sc:{ name, scorecard }
+          };
+          //here we dispatch:
+          store.dispatch(action);
+          this._reset();
+        },
+        _reset: function(){
+          for (var k in this.inputs){
+            this.inputs[k].input.value = "";
+          }
+          this.name.value = "";
+        },
+        componentWillMount: function(){
+          this.inputs = {};
+        },
+        render: function(){
+          var inputs = Array(6).fill(1).map( (e,i) => i ).map( (elm,idx) => {
+            return (
+              <SCInput key={elm} k={elm} ref={ (ref) => this.inputs[idx] = ref }/>
+            );
+          } );
+          return (
+            <div className='add-panel'>
+              <h1>Create New Evaluation</h1>
+              <span>Employee Name: </span>
+              <input type="text" id="new-name" ref={ (ref) => this.name = ref }/>
+              <div>Employee Scorecard Items: </div>
+              <div>
+                {inputs}
+              </div>
+              <div className="btn" onClick={this._createEval}>
+                Create new Scorecard
+              </div>
+            </div>
+          );
+        }
+      });
+      var EvaluationList = React.createClass({
           render: function(){
             var selfProps = this.props;
             var evaluationPanels = this.props.evals.map(function(e){
@@ -106,21 +190,30 @@
               coreVals:coreValues,
               evals:evals
             };
+            //console.log(store.getState());
+            //return store.getState();
           },
           render: function(){
             return (
               <div>
-                <EvaluationList coreVals={this.state.coreVals} evals={this.state.evals}
-                />
+                <EvaluationList coreVals={store.getState().coreValues} evals={store.getState().evals}  />
+                <EvaluationCreator />
               </div>
 
             );
           }
         });
-        ReactDOM.render(
-          <EvaluationApp />,
-          document.getElementById("app-container")
-        );
+        const { createStore } = Redux;
+        const store = createStore(reducer);
+        const render = () =>{
+          ReactDOM.render(
+            <EvaluationApp />,
+            document.getElementById("app-container")
+          );
+        };
+        store.subscribe(render);
+        render();
+
     </script>
   </body>
 </html>
