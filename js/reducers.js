@@ -1,17 +1,21 @@
 
 const reducer = (state = {evals: [], coreValues: coreValues}, action) => {
+  let newState;
   switch (action.type){
     case 'COREVAL_CHANGE':
-      return handleCVC(state, action);
+      newState = handleCVC(state, action); break;
     case 'SC_SCORE_CHANGE':
-      return scoreChange(state, action);
+      newState = scoreChange(state, action); break;
     case 'SC_WEIGHT_CHANGE':
-      return weightChange(state, action);
+      newState = weightChange(state, action); break;
     case 'ADD_EVAL':
-      return addEval(state, action);
+      newState = addEval(state, action); break;
+    case 'HYDRATE':
+      newState = Object.assign({}, action.newState); break;
     default:
       return state;
   }
+  return newState;
 };
 
 // action = {type, employee, newVal, k}
@@ -19,7 +23,7 @@ const handleCVC = (state, action) => {
   const newEvals = state.evals.map( (evalu) => {
     if (evalu.name === action.employee){
       let delta = {};
-      delta[action.k] = action.newVal;
+      delta[action.k] = Number(action.newVal);
       var newEval = Object.assign({}, evalu,
         {
           coreVals: Object.assign({}, evalu.coreVals, delta)

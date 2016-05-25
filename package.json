@@ -10,7 +10,8 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
-    "watch": "watchify js/auxfunctions.js -o js/dist.js -dv"
+    "watch": "watchify js/auxfunctions.js -o js/dist.js -dv",
+    "server": "jsx js/CoreValsReminderComponent.js js/CoreValsReminder.js && http-server"
   },
   "repository": {
     "type": "git",

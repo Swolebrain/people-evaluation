@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Employee Rating Matrix</title>
+    <link href='https://fonts.googleapis.com/css?family=Lato|Catamaran:700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
@@ -19,7 +20,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script type="text/babel">
+      var CoreValsReminder = React.createClass({
+        render: function(){
+          var rows = [];
+          for (var k in this.props.coreVals){
+            rows.push(
+              <li className="li-pad" key={k}>
+                <strong>{k}: </strong> {this.props.coreVals[k]}
+              </li>
+            );
+          }
+          return (
+            <div className="core-vals-reminder">
+              <h2>Our Core Values:</h2>
+              <ul>
+                {rows}
+              </ul>
+
+            </div>
+          );
+        }
+      });
       var ScoreCardItem = React.createClass({
+        _handleSCScoreChange: function(e){
+          store.dispatch({type: 'SC_SCORE_CHANGE',
+                        employee: this.props.employee,
+                        newVal: e.target.value,
+                        k: this.props.item.name});
+        },
+        _handleSCWeightChange: function(e){
+          //TODO: ENFORCE WEIGHTS ADDING UP TO 1, JUST RED CSS BORDER
+          store.dispatch({type: 'SC_WEIGHT_CHANGE',
+                        employee: this.props.employee,
+                        newVal: e.target.value,
+                        k: this.props.item.name});
+        },
         render: function(){
           return (
             <div className="sc-item">
@@ -27,10 +62,11 @@
                 {this.props.item.name}
               </div>
               <div className="sc-score">
-                {this.props.item.score}
+                <input type="number" value={this.props.item.score} onChange={this._handleSCScoreChange} />
               </div>
               <div className="sc-weight">
-                {this.props.item.weight}
+                <input type="number" min="0" max="1" step="0.1"
+                value={this.props.item.weight} onChange={this._handleSCWeightChange} />
               </div>
             </div>
           );
@@ -39,7 +75,7 @@
       var ScoreCardPanel = React.createClass({
         render: function(){
           var scoreCardItems = this.props.scorecard.map( (e) =>
-            <ScoreCardItem item={e} key={generateId(e.name)}></ScoreCardItem>
+            <ScoreCardItem employee={this.props.employee} item={e} key={generateId(e.name)}></ScoreCardItem>
           );
           return (
             <div>
@@ -73,7 +109,7 @@
               employee={this.props.name} val={this.props.coreVals[k]}></CoreValueItem> );
           }
           return (
-            <div>
+            <div className="employee-panel">
               <h1>{this.props.name}</h1>
               <h2>Core Values</h2>
               <ul className="core-values-panel">
@@ -155,8 +191,8 @@
           return (
             <div className='add-panel'>
               <h1>Create New Evaluation</h1>
-              <span>Employee Name: </span>
-              <input type="text" id="new-name" ref={ (ref) => this.name = ref }/>
+              <div>Employee Name: </div>
+              <input type="text" className="block-input" id="new-name" ref={ (ref) => this.name = ref }/>
               <div>Employee Scorecard Items: </div>
               <div>
                 {inputs}
@@ -198,6 +234,9 @@
               <div>
                 <EvaluationList coreVals={store.getState().coreValues} evals={store.getState().evals}  />
                 <EvaluationCreator />
+                <CoreValsReminder coreVals={store.getState().coreValues} />
+
+
               </div>
 
             );
@@ -205,6 +244,8 @@
         });
         const { createStore } = Redux;
         const store = createStore(reducer);
+        if ( localStorage.getItem("state") )
+          store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
         const render = () =>{
           ReactDOM.render(
             <EvaluationApp />,
@@ -212,6 +253,7 @@
           );
         };
         store.subscribe(render);
+        store.subscribe( () => localStorage.setItem("state", JSON.stringify(store.getState())));
         render();
 
     </script>

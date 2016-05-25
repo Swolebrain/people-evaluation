@@ -1,3 +1,28 @@
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+  margin:0;
+  padding:0;
+  border:0;
+  outline:0;
+  background:transparent;
+  font-family: 'Lato', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-family: 'Catamaran', sans-serif;
+}
+
+
 .core-li{
   display:inline-block;
   text-align:center;
@@ -6,20 +31,29 @@
   box-sizing:border-box;;
   text-align:center;
 }
-.evaluation-list-row>div>ul{
-  padding:0;
+
+.evaluation-list-row{
+  display: flex;
+  flex-direction: row;
 }
 
-.evaluation-list-row > div{
-  display:inline-block;
+/*  EMPLOYEE PANEL */
+.employee-panel{
+  position: relative;
+  height: 250px;
+  display: inline-block;
   font-size:0.6rem;
   margin: 10px;
   padding: 10px;
   border: 1px solid black;
   border-radius:3px;
-
+}
+.evaluation-list-row>div>ul{
+  padding:0;
 }
 
+
+/* SCORECARD */
 .sc-item{
   font-size:0.9rem;
 }
@@ -31,6 +65,10 @@
 }
 .sc-name{
   width: 68%;
+}
+.sc-item input{
+  box-sizing: border-box;
+  width:100%;
 }
 
 .block-input{
@@ -44,6 +82,25 @@
 
 .hidden{
   display:none;
+}
+
+/* ADD PANEL */
+.add-panel{
+  display: inline-block;
+  width:350px;
+}
+
+
+/* CORE VALS REMINDER */
+
+.core-vals-reminder{
+  box-sizing: border-box;
+  width: 350px;
+  display: inline-block;
+}
+
+.core-vals-reminder li{
+  padding: 3px 0;
 }
 
 .btn {
