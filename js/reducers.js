@@ -12,6 +12,8 @@ const reducer = (state = {evals: [], coreValues: coreValues}, action) => {
       newState = addEval(state, action); break;
     case 'HYDRATE':
       newState = Object.assign({}, action.newState); break;
+    case 'REMOVE_EVAL':
+      newState = removeEval(state, action); break;
     default:
       return state;
   }
@@ -89,5 +91,11 @@ const addEval = (state, action) => {
   const fullSC = Object.assign({}, action.sc, {coreVals: cvScores});
   //console.log(state.evals);
   const newEvals = state.evals.concat(fullSC);
+  return {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
+};
+
+//action = {type, employee}
+const removeEval = (state, action) => {
+  const newEvals = state.evals.filter( (e) => e.name != action.employee );
   return {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
 };

@@ -134,8 +134,33 @@ function runTests(){
       	}
     ]
   );
-
+  //test 4: add new scorecard
+  console.log("running test 4");
+  let newState5 = reducer(state, {
+    type: 'REMOVE_EVAL',
+    employee: 'eliezer tavarez'
+  });
+  expect(newState5.evals).toEqual(
+    [
+    	{
+    	    name: "lidia bravo",
+    	    scorecard: [
+    				{ name: "Tames the Diamond D beast", score: 9, weight: 0.50},
+    				{ name: "Has incredible patience", score: 9, weight: 0.25 },
+    				{ name: "Schedules and organizes all classes", score: 9, weight: 0.25 }
+    			],
+    	    coreVals: {
+    				SS: 9,
+    				Acc: 10,
+    				Asp: 5,
+    				Com: 9,
+    				Exx: 9,
+    				Giv: 8
+    			}
+    	}
+    ]
+  );
 
   console.log("tests passed");
 }
-//  runTests();
+//runTests();

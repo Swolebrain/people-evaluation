@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/style.css" />
   </head>
   <body>
+    <img id="logo" src="img/FVI-white.png" alt="Florida Vocational Institute" class="center-block"/>
+    <h1 class="center-block white-text">People Plotting Grid</h1>
     <div id="app-container">
 
     </div>
@@ -20,6 +22,75 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.0.1/react-dom.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script type="text/babel">
+      const PANELWIDTH = 370;
+      var EvaluationGrid = React.createClass({
+        getInitialState: function(){
+          return {visible: false};
+        },
+        generateGrid: function(){
+          var gridPositions = this.props.evals.reduce( (prev,ev) => {
+              var name = ev.name;
+              var scorecard = Math.round(ev.scorecard.reduce( (p,c) => p+(c.score*c.weight) , 0));
+              var coreVals = Math.round(Object.keys(ev.coreVals).reduce( (p,c) => p+ ev.coreVals[c] , 0)/
+                                              Object.keys(ev.coreVals).length);
+              return prev.concat({name, scorecard, coreVals});
+          }, []);
+          var grid = [ ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""],
+                ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""] ];
+
+          gridPositions.forEach( (e, idx) => {
+            var row = 10-e.scorecard;
+            if (row < 0) row = 0;
+            if (row > 5) row = 5;
+            var col = e.coreVals-5;
+            if (col < 0) col = 0;
+            grid[row][col] += e.name+'\n';
+          });
+          var rows = grid.map( function(row, index){
+            var cells = row.map( (e, i) => <td key={i}> {e} </td>);
+            return (
+              <tr key={index}>
+                {cells}
+              </tr>);
+            });
+          return (
+            <table>
+              <tbody>
+                {rows}
+              </tbody>
+            </table>
+          );
+        },
+        _hideOverlay: function(){
+          //set state to hidden
+          this.setState({visible: false});
+        },
+        _reveal: function(){
+          console.log("revealing");
+          this.setState({visible: true});
+        },
+        render: function(){
+          var style = {marginBottom: "20px"};
+          var overlayStyle = {height: $(document).height()};
+          var overlay = <div></div>;
+          if (this.state.visible){
+            overlay = (
+            <div className='overlay' style={overlayStyle} onClick={this._hideOverlay}>
+              {this.generateGrid()}
+            </div>);
+          }
+          return (
+            <div>
+              <div className="btn center-block" style={style} onClick={this._reveal}>
+                Plot Grid!
+              </div>
+              {overlay}
+            </div>
+
+          );
+        }
+      });
+
       var CoreValsReminder = React.createClass({
         render: function(){
           var rows = [];
@@ -102,14 +173,59 @@
         }
       });
       var EvaluationPanel = React.createClass({
+        _mount: function(){
+          var width = (window.innerWidth-PANELWIDTH-30)/(store.getState().evals.length-1);
+          var left = Math.min(parseInt(width)*this.props.index, PANELWIDTH*this.props.index);
+          this._style = {left: left,
+                      zIndex: this.props.index,
+                      transform: "perspective(2000px) rotate3d(0,1,0,45deg)"};
+          this.state = Object.assign({}, this._style);
+        },
+        componentWillMount: function(){
+          //this._mount();
+          /*var self = this;
+          window.addEventListener('resize', function(){
+              self._mount();
+              self.setState(Object.assign({}, this.state));
+          });*/
+          //this._style = this.props.styleProp;
+          //this.state = Object.assign({}, this._style);
+          this._hovered = false;
+        },
+        _handleMouseEnter: function(){
+          //this.setState({left: this._style.left, zIndex: 99, transform: "scale(1.05,1.05)"});
+          this._hovered = true;
+          this.setState({num: Math.random()});
+        },
+        _handleMouseLeave: function(){
+          //this.setState(Object.assign({}, this._style));
+          this._hovered = false;
+          this.setState({num: Math.random()});
+        },
+        _removeEval: function(e){
+          store.dispatch({
+            type: 'REMOVE_EVAL',
+            employee: this.props.name
+          });
+        },
         render: function(){
           var corevalz = [];
           for (var k in this.props.coreVals){
             corevalz.push( <CoreValueItem key={k} k={k}
               employee={this.props.name} val={this.props.coreVals[k]}></CoreValueItem> );
           }
+          var localStyle;
+          if (this._hovered){
+            localStyle = { left: this.props.styleProp.left, zIndex: 99,
+                        transform: "scale(1.05,1.05)" };
+          }
+          else{
+            localStyle = this.props.styleProp;
+          }
           return (
-            <div className="employee-panel">
+            <div className="employee-panel" style={localStyle}
+                    onMouseEnter={this._handleMouseEnter} onMouseLeave={this._handleMouseLeave}>
+              <span className="close-btn" onClick={this._removeEval}>X</span>
               <h1>{this.props.name}</h1>
               <h2>Core Values</h2>
               <ul className="core-values-panel">
@@ -190,7 +306,7 @@
           } );
           return (
             <div className='add-panel'>
-              <h1>Create New Evaluation</h1>
+              <h1>Add Employee Evaluation</h1>
               <div>Employee Name: </div>
               <input type="text" className="block-input" id="new-name" ref={ (ref) => this.name = ref }/>
               <div>Employee Scorecard Items: </div>
@@ -205,56 +321,64 @@
         }
       });
       var EvaluationList = React.createClass({
-          render: function(){
-            var selfProps = this.props;
-            var evaluationPanels = this.props.evals.map(function(e){
-              return (
-                <EvaluationPanel key={generateId(e.name)} name={e.name}
-                  scorecard={e.scorecard} coreVals={e.coreVals} />
-                );
-            });
+        render: function(){
+          var selfProps = this.props;
+          var width = (window.innerWidth-PANELWIDTH-30)/(store.getState().evals.length-1);
+          var evaluationPanels = this.props.evals.map(function(e, idx){
+            var left = Math.min(parseInt(width)*idx, PANELWIDTH*idx);
+            var styleProp = {left: left,
+                        zIndex: idx,
+                        transform: "perspective(2000px) rotate3d(0,1,0,45deg)"};
             return (
-              <div className="evaluation-list-row">
-                {evaluationPanels}
-              </div>
-            );
-          }
-        });
-        var EvaluationApp = React.createClass({
-          getInitialState: function(){
-            return {
-              coreVals:coreValues,
-              evals:evals
-            };
-            //console.log(store.getState());
-            //return store.getState();
-          },
-          render: function(){
-            return (
+              <EvaluationPanel key={generateId(e.name)} name={e.name} index={idx} styleProp={styleProp}
+                scorecard={e.scorecard} coreVals={e.coreVals} />
+              );
+          });
+          return (
+            <div className="evaluation-list-row">
+              {evaluationPanels}
+            </div>
+          );
+        }
+      });
+      var EvaluationApp = React.createClass({
+        getInitialState: function(){
+          return {
+            coreVals:coreValues,
+            evals:evals
+          };
+          //console.log(store.getState());
+          //return store.getState();
+        },
+        render: function(){
+          return (
+            <div>
+              <EvaluationList coreVals={store.getState().coreValues} evals={store.getState().evals}  />
               <div>
-                <EvaluationList coreVals={store.getState().coreValues} evals={store.getState().evals}  />
+                <EvaluationGrid evals={store.getState().evals} />
+              </div>
+              <div className="bottom-section">
                 <EvaluationCreator />
                 <CoreValsReminder coreVals={store.getState().coreValues} />
-
-
               </div>
+            </div>
 
-            );
-          }
-        });
-        const { createStore } = Redux;
-        const store = createStore(reducer);
-        if ( localStorage.getItem("state") )
-          store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
-        const render = () =>{
-          ReactDOM.render(
-            <EvaluationApp />,
-            document.getElementById("app-container")
           );
-        };
-        store.subscribe(render);
-        store.subscribe( () => localStorage.setItem("state", JSON.stringify(store.getState())));
-        render();
+        }
+      });
+      const { createStore } = Redux;
+      const store = createStore(reducer);
+      if ( localStorage.getItem("state") )
+        store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
+      const render = () =>{
+        ReactDOM.render(
+          <EvaluationApp />,
+          document.getElementById("app-container")
+        );
+      };
+      store.subscribe(render);
+      store.subscribe( () => localStorage.setItem("state", JSON.stringify(store.getState())));
+      render();
 
     </script>
   </body>
