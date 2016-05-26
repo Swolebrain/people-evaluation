@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Employee Rating Matrix</title>
+    <link rel="shortcut icon" type="image/ico" href="http://www.fvi.edu/wp-content/themes/fvi/images/fav.ico" />
     <link href='https://fonts.googleapis.com/css?family=Lato|Catamaran:700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/style.css" />
   </head>
@@ -54,11 +55,13 @@
               </tr>);
             });
           return (
-            <table>
-              <tbody>
-                {rows}
-              </tbody>
-            </table>
+            <div>
+              <table>
+                <tbody>
+                  {rows}
+                </tbody>
+              </table>
+            </div>
           );
         },
         _hideOverlay: function(){

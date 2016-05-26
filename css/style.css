@@ -191,5 +191,31 @@ h1, h2, h3, h4, h5, h6{
 }
 
 .overlay table{
-  margin: 200px auto;
+  margin: 200px auto 0 auto;
+}
+
+.overlay > div::after{
+  content: "Core Value Fit (horizontal) vs. Effectiveness (vertical)";
+  color: white;
+  display:inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+/*
+.overlay > div::before{
+  content: "------------- Effectiveness --------------";
+  color: white;
+  display:inline-block;
+  position: relative;
+  transform: rotateZ(-90deg);
+}
+*/
+
+.overlay table  tr > td:nth-child(3){
+  border-right: 3px solid black;
+}
+
+.overlay table tr:nth-child(3) td {
+  border-bottom: 3px solid black;
 }
