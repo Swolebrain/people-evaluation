@@ -73,17 +73,6 @@ const scoreCardChange = (state, action, which) => {
 
 //action = {type, sc: {name: str, scorecard: [{name, score, weight}] }}
 const addEval = (state, action) => {
-  /*var validateCV = true;
-  var stateCV = Object.keys(state.coreValues).sort();
-  var actionSC = Object.keys(action.sc.coreVals).sort();
-  actionSC.forEach( (e, idx) => {
-    if (e != stateCV[idx])
-      validateCV = false;
-  } );
-  if (!validateCV || stateCV.length != actionSC.length){
-    console.log("new employee doesn't have the right code values");
-    return state;
-  }*/
   let cvScores = {};
   for (var k in state.coreValues){
     cvScores[k] = 0;
@@ -93,6 +82,7 @@ const addEval = (state, action) => {
   const newEvals = state.evals.concat(fullSC);
   return {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
 };
+
 
 //action = {type, employee}
 const removeEval = (state, action) => {

@@ -45,6 +45,7 @@
             if (row > 5) row = 5;
             var col = e.coreVals-5;
             if (col < 0) col = 0;
+            if (col > 5) col = 5;
             grid[row][col] += e.name+'\n';
           });
           var rows = grid.map( function(row, index){
@@ -65,11 +66,9 @@
           );
         },
         _hideOverlay: function(){
-          //set state to hidden
           this.setState({visible: false});
         },
         _reveal: function(){
-          console.log("revealing");
           this.setState({visible: true});
         },
         render: function(){
@@ -123,7 +122,7 @@
                         k: this.props.item.name});
         },
         _handleSCWeightChange: function(e){
-          //TODO: ENFORCE WEIGHTS ADDING UP TO 1, JUST RED CSS BORDER
+          //TODO: ENFORCE WEIGHTS ADDING UP TO 1, WITH RED CSS BORDER
           store.dispatch({type: 'SC_WEIGHT_CHANGE',
                         employee: this.props.employee,
                         newVal: e.target.value,
@@ -176,32 +175,14 @@
         }
       });
       var EvaluationPanel = React.createClass({
-        _mount: function(){
-          var width = (window.innerWidth-PANELWIDTH-30)/(store.getState().evals.length-1);
-          var left = Math.min(parseInt(width)*this.props.index, PANELWIDTH*this.props.index);
-          this._style = {left: left,
-                      zIndex: this.props.index,
-                      transform: "perspective(2000px) rotate3d(0,1,0,1deg)"};
-          this.state = Object.assign({}, this._style);
-        },
         componentWillMount: function(){
-          //this._mount();
-          /*var self = this;
-          window.addEventListener('resize', function(){
-              self._mount();
-              self.setState(Object.assign({}, this.state));
-          });*/
-          //this._style = this.props.styleProp;
-          //this.state = Object.assign({}, this._style);
           this._hovered = false;
         },
         _handleMouseEnter: function(){
-          //this.setState({left: this._style.left, zIndex: 99, transform: "scale(1.05,1.05)"});
           this._hovered = true;
           this.setState({num: Math.random()});
         },
         _handleMouseLeave: function(){
-          //this.setState(Object.assign({}, this._style));
           this._hovered = false;
           this.setState({num: Math.random()});
         },
@@ -217,8 +198,8 @@
             corevalz.push( <CoreValueItem key={k} k={k}
               employee={this.props.name} val={this.props.coreVals[k]}></CoreValueItem> );
           }
-          var localStyle;
-          if (this._hovered){
+          var localStyle; //style object cannot be mutated
+          if (this._hovered){ //override the inherited style prop when hovered
             localStyle = { left: this.props.styleProp.left, zIndex: 99,
                         transform: "scale(1.05,1.05)" };
           }
@@ -244,24 +225,6 @@
         }
       });
       var SCInput = React.createClass({
-        /*_handleOnChange: function(e){
-          var curIDStub = e.target.id.substring(0, e.target.id.length-1);
-          var curID = Number(e.target.id.substring(e.target.id.length-1));
-          if (e.target.value.length === 0){
-            $(e.target).siblings().toArray().reverse().reduce( (p, c, i) => {
-              if (p === i && $(c).val().length === 0 ){
-                $(c).addClass("hidden");
-                return p+1;
-              }else{
-                return p;
-              }
-            }, 0);
-          }
-          else{
-            //unhide next one
-            $(`#${curIDStub}${curID+1}`).removeClass('hidden');
-          }
-        },*/
         render: function(){
           var cls = this.props.k!=0?"block-input":"block-input";
           var id = `sc-item-${this.props.k}`;
@@ -288,7 +251,6 @@
             type: "ADD_EVAL",
             sc:{ name, scorecard }
           };
-          //here we dispatch:
           store.dispatch(action);
           this._reset();
         },
@@ -351,8 +313,6 @@
             coreVals:coreValues,
             evals:evals
           };
-          //console.log(store.getState());
-          //return store.getState();
         },
         render: function(){
           return (
@@ -374,6 +334,7 @@
       const store = createStore(reducer);
       if ( localStorage.getItem("state") )
         store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
+
       const render = () =>{
         ReactDOM.render(
           <EvaluationApp />,

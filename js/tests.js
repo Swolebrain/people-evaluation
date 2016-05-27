@@ -1,4 +1,4 @@
-
+// a little bit of TDD lol
 function runTests(){
   const state = { evals: evals, coreValues: coreValues};
   deepFreeze(state);
