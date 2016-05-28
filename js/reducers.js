@@ -89,3 +89,6 @@ const removeEval = (state, action) => {
   const newEvals = state.evals.filter( (e) => e.name != action.employee );
   return {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
 };
+
+if (module)
+  module.exports = reducer;
