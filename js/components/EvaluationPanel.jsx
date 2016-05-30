@@ -6,15 +6,15 @@ import store from '../store.js';
 
 const EvaluationPanel = React.createClass({
   componentWillMount: function(){
-    this._hovered = false;
+    this.setState({hovered, false});
   },
   _handleMouseEnter: function(){
     this._hovered = true;
-    this.setState({num: Math.random()});
+    this.setState({hovered: true});
   },
   _handleMouseLeave: function(){
     this._hovered = false;
-    this.setState({num: Math.random()});
+    this.setState({hovered: false});
   },
   _removeEval: function(e){
     store.dispatch({
@@ -23,7 +23,8 @@ const EvaluationPanel = React.createClass({
     });
   },
   shouldComponentUpdate: function(nextProps, nextState) {
-    console.log('EvaluationPanel.shouldComponentUpdate')
+    //this method is called by react whenever object receives new props
+    //console.log('EvaluationPanel.shouldComponentUpdate')
     return true;
   },
   render: function(){
@@ -33,7 +34,7 @@ const EvaluationPanel = React.createClass({
         employee={this.props.name} val={this.props.coreVals[k]}></CoreValueItem> );
     }
     var localStyle; //style object cannot be mutated
-    if (this._hovered){ //override the inherited style prop when hovered
+    if (this.getState().hovered){ //override the inherited style prop when hovered
       localStyle = { left: this.props.styleProp.left, zIndex: 99,
                   transform: "scale(1.05,1.05)" };
     }
