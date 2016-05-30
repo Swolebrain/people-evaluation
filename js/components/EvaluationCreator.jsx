@@ -1,4 +1,9 @@
-module.exports = React.createClass({
+import React from 'react';
+import ReactDOM from 'react-dom';
+import store from '../store.js';
+import SCInput from './SCInput.jsx';
+
+const EvaluationCreator = React.createClass({
   _createEval: function(){
     let scorecard = [];
     for (var k in this.inputs){
@@ -50,3 +55,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+export default EvaluationCreator;

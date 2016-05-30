@@ -1,4 +1,7 @@
-module.exports = React.createClass({
+import React from 'react';
+import store from '../store.js';
+
+const CoreValueItem = React.createClass({
   _handleCoreValChange: function(e){
     store.dispatch({
       type: 'COREVAL_CHANGE', employee: this.props.employee,
@@ -15,3 +18,5 @@ module.exports = React.createClass({
       );
   }
 });
+
+export default CoreValueItem;

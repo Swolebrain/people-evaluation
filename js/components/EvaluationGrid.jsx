@@ -1,4 +1,8 @@
-module.exports = React.createClass({
+import React from 'react';
+import ReactDOM from 'react-dom';
+const $ = require('jquery');
+
+const EvaluationGrid = React.createClass({
   getInitialState: function(){
     return {visible: false};
   },
@@ -67,3 +71,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+export default EvaluationGrid;

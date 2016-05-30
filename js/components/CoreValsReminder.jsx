@@ -1,4 +1,6 @@
-module.exports = React.createClass({
+import React from 'react';
+
+const CoreValsReminder = React.createClass({
   render: function(){
     var rows = [];
     for (var k in this.props.coreVals){
@@ -19,3 +21,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+export default CoreValsReminder;

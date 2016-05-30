@@ -1,3 +1,4 @@
+import coreValues from './data.js';
 
 const reducer = (state = {evals: [], coreValues: coreValues}, action) => {
   let newState;

@@ -1,7 +1,19 @@
-module.exports = React.createClass({
+import React from 'react';
+import ReactDOM from 'react-dom';
+import EvaluationPanel from './EvaluationPanel.jsx';
+import store from '../store.js';
+const PANELWIDTH = 370;
+import generateId from '../auxfunctions.js';
+
+const EvaluationList = React.createClass({
+  getInitialState: function(){
+    this.setState({windowWidth: window.innerWidth})
+  },
+  componentDidMount: function(){
+    window.addEventListener("resize", (e) => this.setState({windowWidth: window.innerWidth}));
+  },
   render: function(){
-    var selfProps = this.props;
-    var width = (window.innerWidth-PANELWIDTH-30)/(store.getState().evals.length-1);
+    var width = (this.getState().windowWidth-PANELWIDTH-30)/(store.getState().evals.length-1);
     var rot = parseInt(45*this.props.evals.length/5); //dampen rotation the fewer elements there are
     var evaluationPanels = this.props.evals.map(function(e, idx, arr){
       var left = Math.min(parseInt(width)*idx, PANELWIDTH*idx);
@@ -20,3 +32,5 @@ module.exports = React.createClass({
     );
   }
 });
+
+export default EvaluationList;

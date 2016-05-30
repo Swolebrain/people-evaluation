@@ -1,4 +1,8 @@
-module.exports = React.createClass({
+import React from 'react';
+import ReactDOM from 'react-dom';
+import store from '../store.js';
+
+const ScoreCardItem = React.createClass({
   _handleSCScoreChange: function(e){
     store.dispatch({type: 'SC_SCORE_CHANGE',
                   employee: this.props.employee,
@@ -29,3 +33,4 @@ module.exports = React.createClass({
     );
   }
 });
+export default ScoreCardItem;

@@ -1,11 +1,3 @@
-//MISC
-const generateId = (name) => name.toLowerCase().split(" ").join("-");
-const PANELWIDTH = 370;
-
-//REACT INCLUDES
-const React = require('react');
-const ReactDOM = require('react-dom');
-
 //COMPONENTS
 const EvaluationGrid = require('./components/EvaluationGrid.jsx');
 const CoreValsReminder = require('./components/CoreValsReminder.jsx');
@@ -18,13 +10,9 @@ const EvaluationCreator = require('./components/EvaluationCreator.jsx');
 const EvaluationList = require('./components/EvaluationList.jsx');
 const EvaluationApp = require('./components/EvaluationApp.jsx');
 
-//REDUX INCLUDES
-const reducer = require('./reducers.js');
-const Redux = require('redux');
 
 //MAIN APPLICATION
-const { createStore } = Redux;
-const store = createStore(reducer);
+import store from './store.js';
 if ( localStorage && localStorage.getItem("state") )
   store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
 

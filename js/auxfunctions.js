@@ -1,11 +1,12 @@
-window.deepFreeze = require('../node_modules/deep-freeze');
-window.expect = require('../node_modules/expect');
+//deepFreeze = require('../node_modules/deep-freeze');
+//expect = require('../node_modules/expect');
 
-window.generateId = (name) => name.toLowerCase().split(" ").join("-");
+const generateId = (name) => name.toLowerCase().split(" ").join("-");
 
+export default generateId;
 
 //Object.assign polyfill
-if (!Object.assign) {
+/*if (!Object.assign) {
   console.log("running Object.assign polyfill");
   Object.defineProperty(Object, 'assign', {
     enumerable: false,
@@ -38,3 +39,4 @@ if (!Object.assign) {
     }
   });
 }
+*/

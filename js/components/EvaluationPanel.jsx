@@ -1,4 +1,10 @@
-module.exports = React.createClass({
+import React from 'react';
+import ReactDOM from 'react-dom';
+import CoreValueItem from './CoreValueItem.jsx';
+import ScoreCardPanel from './ScoreCardPanel.jsx';
+import store from '../store.js';
+
+const EvaluationPanel = React.createClass({
   componentWillMount: function(){
     this._hovered = false;
   },
@@ -15,6 +21,10 @@ module.exports = React.createClass({
       type: 'REMOVE_EVAL',
       employee: this.props.name
     });
+  },
+  shouldComponentUpdate: function(nextProps, nextState) {
+    console.log('EvaluationPanel.shouldComponentUpdate')
+    return true;
   },
   render: function(){
     var corevalz = [];
@@ -48,3 +58,5 @@ module.exports = React.createClass({
     )
   }
 });
+
+export default EvaluationPanel;

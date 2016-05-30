@@ -16,7 +16,7 @@ module.exports = {
             }
         }]
     },
-    plugins: [
+  /*  plugins: [
         new webpack.optimize.UglifyJsPlugin({
             compress: {
                 warnings: false,
@@ -25,5 +25,5 @@ module.exports = {
                 comments: false,
             },
         }),
-    ]
+    ]*/
 }
