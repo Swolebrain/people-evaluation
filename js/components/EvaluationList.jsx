@@ -7,13 +7,17 @@ import generateId from '../auxfunctions.js';
 
 const EvaluationList = React.createClass({
   getInitialState: function(){
-    this.setState({windowWidth: window.innerWidth})
+    return {windowWidth: window.innerWidth};
   },
   componentDidMount: function(){
     window.addEventListener("resize", (e) => this.setState({windowWidth: window.innerWidth}));
   },
   render: function(){
-    var width = (this.getState().windowWidth-PANELWIDTH-30)/(store.getState().evals.length-1);
+    var numSlots = store.getState().evals.length-1;
+    if (numSlots === 0)
+      var width = PANELWIDTH;
+    else
+      var width = (this.state.windowWidth-PANELWIDTH-30)/numSlots;
     var rot = parseInt(45*this.props.evals.length/5); //dampen rotation the fewer elements there are
     var evaluationPanels = this.props.evals.map(function(e, idx, arr){
       var left = Math.min(parseInt(width)*idx, PANELWIDTH*idx);

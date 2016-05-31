@@ -68,7 +68,7 @@
 
 	if (localStorage && localStorage.getItem("state")) _store2.default.dispatch({ type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state")) });
 
-	var render = __webpack_require__(197);
+	var render = __webpack_require__(198);
 	_store2.default.subscribe(render);
 	_store2.default.subscribe(function () {
 	  return localStorage.setItem("state", JSON.stringify(_store2.default.getState()));
@@ -218,6 +218,9 @@
 
 	"use strict";
 
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
 	//THIS IS THE DEFAULT STUFF
 
 	var coreValues = {
@@ -228,6 +231,9 @@
 		Exx: "Exceed expectations",
 		Giv: "Giving back to the community"
 	};
+
+	exports.default = coreValues;
+
 
 	var evals = [{
 		name: "lidia bravo",
@@ -31593,15 +31599,13 @@
 	  displayName: 'EvaluationPanel',
 
 	  componentWillMount: function componentWillMount() {
-	    this._hovered = false;
+	    this.setState({ hovered: false });
 	  },
 	  _handleMouseEnter: function _handleMouseEnter() {
-	    this._hovered = true;
-	    this.setState({ num: Math.random() });
+	    this.setState({ hovered: true });
 	  },
 	  _handleMouseLeave: function _handleMouseLeave() {
-	    this._hovered = false;
-	    this.setState({ num: Math.random() });
+	    this.setState({ hovered: false });
 	  },
 	  _removeEval: function _removeEval(e) {
 	    _store2.default.dispatch({
@@ -31610,7 +31614,8 @@
 	    });
 	  },
 	  shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
-	    console.log('EvaluationPanel.shouldComponentUpdate');
+	    //this method is called by react whenever object receives new props
+	    //console.log('EvaluationPanel.shouldComponentUpdate')
 	    return true;
 	  },
 	  render: function render() {
@@ -31620,7 +31625,7 @@
 	        employee: this.props.name, val: this.props.coreVals[k] }));
 	    }
 	    var localStyle; //style object cannot be mutated
-	    if (this._hovered) {
+	    if (this.state.hovered) {
 	      //override the inherited style prop when hovered
 	      localStyle = { left: this.props.styleProp.left, zIndex: 99,
 	        transform: "scale(1.05,1.05)" };
@@ -31846,16 +31851,19 @@
 	var EvaluationList = _react2.default.createClass({
 	  displayName: 'EvaluationList',
 
+	  getInitialState: function getInitialState() {
+	    return { windowWidth: window.innerWidth };
+	  },
 	  componentDidMount: function componentDidMount() {
 	    var _this = this;
 
 	    window.addEventListener("resize", function (e) {
-	      return _this.setState({ num: Math.random() });
+	      return _this.setState({ windowWidth: window.innerWidth });
 	    });
 	  },
 	  render: function render() {
-	    var selfProps = this.props;
-	    var width = (window.innerWidth - PANELWIDTH - 30) / (_store2.default.getState().evals.length - 1);
+	    var numSlots = _store2.default.getState().evals.length - 1;
+	    if (numSlots === 0) var width = PANELWIDTH;else var width = (this.state.windowWidth - PANELWIDTH - 30) / numSlots;
 	    var rot = parseInt(45 * this.props.evals.length / 5); //dampen rotation the fewer elements there are
 	    var evaluationPanels = this.props.evals.map(function (e, idx, arr) {
 	      var left = Math.min(parseInt(width) * idx, PANELWIDTH * idx);
@@ -31905,6 +31913,10 @@
 
 	var _CoreValsReminder2 = _interopRequireDefault(_CoreValsReminder);
 
+	var _LoginComponent = __webpack_require__(197);
+
+	var _LoginComponent2 = _interopRequireDefault(_LoginComponent);
+
 	var _store = __webpack_require__(1);
 
 	var _store2 = _interopRequireDefault(_store);
@@ -31915,9 +31927,26 @@
 	  displayName: 'EvaluationApp',
 
 	  getInitialState: function getInitialState() {
-	    return _store2.default.getState();
+	    this.lock = new Auth0Lock('trDPfReklgtHuU9vMwYtEYBGTz0nuLgp', 'swolebrain.auth0.com');
+	    if (localStorage.getItem("token") && localStorage.getItem('profile')) return {
+	      store: _store2.default.getState(),
+	      token: localStorage.getItem('token'),
+	      profile: JSON.parse(localStorage.getItem('profile'))
+	    };else {
+	      return { store: _store2.default.getState() };
+	    }
+	  },
+	  showLock: function showLock(e) {
+	    e.preventDefault();
+	    this.lock.show({ popup: false }, function (err, profile, idToken) {
+	      if (err) alert(err);
+	      localStorage.setItem('token', idToken);
+	      localStorage.setItem('profile', JSON.stringify(profile));
+	      this.setState({ store: _store2.default.getState(), token: idToken, profile: profile });
+	    }.bind(this));
 	  },
 	  render: function render() {
+	    if (!this.state.token) return _react2.default.createElement(_LoginComponent2.default, { lock: this.lock, show: this.showLock });
 	    return _react2.default.createElement(
 	      'div',
 	      null,
@@ -31941,6 +31970,52 @@
 
 /***/ },
 /* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _EvaluationApp = __webpack_require__(196);
+
+	var _EvaluationApp2 = _interopRequireDefault(_EvaluationApp);
+
+	var _react = __webpack_require__(20);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var LoginComponent = _react2.default.createClass({
+	  displayName: 'LoginComponent',
+
+	  render: function render() {
+	    return _react2.default.createElement(
+	      'div',
+	      { className: 'login-page' },
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'form' },
+	        _react2.default.createElement(
+	          'form',
+	          { className: 'login-form' },
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: this.props.show },
+	            'login'
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+
+	exports.default = LoginComponent;
+
+/***/ },
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';

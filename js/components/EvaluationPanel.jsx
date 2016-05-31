@@ -6,14 +6,12 @@ import store from '../store.js';
 
 const EvaluationPanel = React.createClass({
   componentWillMount: function(){
-    this.setState({hovered, false});
+    this.setState({hovered: false});
   },
   _handleMouseEnter: function(){
-    this._hovered = true;
     this.setState({hovered: true});
   },
   _handleMouseLeave: function(){
-    this._hovered = false;
     this.setState({hovered: false});
   },
   _removeEval: function(e){
@@ -34,7 +32,7 @@ const EvaluationPanel = React.createClass({
         employee={this.props.name} val={this.props.coreVals[k]}></CoreValueItem> );
     }
     var localStyle; //style object cannot be mutated
-    if (this.getState().hovered){ //override the inherited style prop when hovered
+    if (this.state.hovered){ //override the inherited style prop when hovered
       localStyle = { left: this.props.styleProp.left, zIndex: 99,
                   transform: "scale(1.05,1.05)" };
     }
