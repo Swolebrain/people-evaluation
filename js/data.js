@@ -9,7 +9,7 @@ var coreValues = {
   Giv: "Giving back to the community"
 };
 
-export default coreValues
+export default coreValues;
 
 var evals = [
 	{

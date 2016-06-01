@@ -99,6 +99,7 @@ h1, h2, h3, h4, h5, h6{
 }
 .sc-name{
   width: 68%;
+  max-width: 240px;
 }
 .sc-item input{
   box-sizing: border-box;

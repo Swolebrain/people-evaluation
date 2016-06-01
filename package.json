@@ -21,7 +21,7 @@
   },
   "scripts": {
     "watch": "watchify js/auxfunctions.js -o js/dist.js -dv",
-    "start": "http-server"
+    "start": "webpack && http-server"
   },
   "repository": {
     "type": "git",
