@@ -64,6 +64,8 @@
 	var EvaluationList = __webpack_require__(195);
 	var EvaluationApp = __webpack_require__(196);
 
+	var $ = __webpack_require__(186);
+
 	//MAIN APPLICATION
 
 	if (localStorage && localStorage.getItem("state")) _store2.default.dispatch({ type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state")) });
@@ -71,7 +73,22 @@
 	var render = __webpack_require__(198);
 	_store2.default.subscribe(render);
 	_store2.default.subscribe(function () {
-	  return localStorage.setItem("state", JSON.stringify(_store2.default.getState()));
+	  var state = _store2.default.getState();
+	  var data = $.param({
+	    user: JSON.parse(localStorage.getItem('profile')).upn,
+	    state: state
+	  });
+	  localStorage.setItem("state", JSON.stringify(state));
+	  $.ajax({
+	    url: 'http://localhost:8008/api?' + data,
+	    method: 'POST',
+	    headers: {
+	      authorization: "Bearer " + localStorage.getItem('token')
+	    },
+	    success: function success(resp, txt, xhr) {
+	      console.log(resp);
+	    }
+	  });
 	});
 	render();
 
@@ -31928,18 +31945,34 @@
 
 	  getInitialState: function getInitialState() {
 	    this.lock = new Auth0Lock('trDPfReklgtHuU9vMwYtEYBGTz0nuLgp', 'swolebrain.auth0.com');
-	    if (localStorage.getItem("token") && localStorage.getItem('profile')) return {
-	      store: _store2.default.getState(),
-	      token: localStorage.getItem('token'),
-	      profile: JSON.parse(localStorage.getItem('profile'))
-	    };else {
+	    var prf = localStorage.getItem('profile');
+	    if (prf) {
+	      prf = JSON.parse(prf);
+	      /*console.log(new Date().getTime() );
+	      console.log(Number(prf.identities[0].expires_in));
+	      console.log(prf.issued_timestamp);
+	      console.log(new Date().getTime()/1000 < Number(prf.identities[0].expires_in) + prf.issued_timestamp/1000);*/
+	    }
+	    if (localStorage.getItem("token") && prf && new Date().getTime() / 1000 < Number(prf.identities[0].expires_in) + prf.issued_timestamp / 1000) {
+	      return {
+	        store: _store2.default.getState(),
+	        token: localStorage.getItem('token'),
+	        profile: JSON.parse(localStorage.getItem('profile'))
+	      };
+	    } else {
+	      localStorage.removeItem('profile');
+	      localStorage.removeItem('token');
 	      return { store: _store2.default.getState() };
 	    }
 	  },
 	  showLock: function showLock(e) {
 	    e.preventDefault();
 	    this.lock.show({ popup: false }, function (err, profile, idToken) {
-	      if (err) alert(err);
+	      if (err) {
+	        alert(err);
+	        return;
+	      }
+	      profile.issued_timestamp = new Date().getTime();
 	      localStorage.setItem('token', idToken);
 	      localStorage.setItem('profile', JSON.stringify(profile));
 	      this.setState({ store: _store2.default.getState(), token: idToken, profile: profile });
