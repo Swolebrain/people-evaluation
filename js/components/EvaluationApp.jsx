@@ -9,26 +9,26 @@ import store from '../store.js';
 const EvaluationApp = React.createClass({
   getInitialState: function(){
     this.lock = new Auth0Lock('trDPfReklgtHuU9vMwYtEYBGTz0nuLgp', 'swolebrain.auth0.com');
-    var prf = localStorage.getItem('profile');
-    if (prf){
-      prf = JSON.parse(prf);
-      /*console.log(new Date().getTime() );
-      console.log(Number(prf.identities[0].expires_in));
-      console.log(prf.issued_timestamp);
-      console.log(new Date().getTime()/1000 < Number(prf.identities[0].expires_in) + prf.issued_timestamp/1000);*/
+    return getStateBasedOnAuth();
+  },
+  getStateBasedOnAuth: function(){
+    if (!localStorage.getItem('profile') || !localStorage.getItem("token")){
+      return {store: store.getState()};
     }
-    if ( localStorage.getItem("token") && prf &&
-        new Date().getTime()/1000 < Number(prf.identities[0].expires_in) + prf.issued_timestamp/1000 ){
+    const prf = JSON.parse(localStorage.getItem('profile'));
+    const token = localStorage.getItem("token");
+    if (JSON.parse(atob(token.split(".")[1])).exp < new Date().getTime()){
+      console.log("token expired");
+      localStorage.removeItem('profile');
+      localStorage.removeItem('token');
+      return {store: store.getState()};
+    }
+    else {
       return {
         store: store.getState(),
         token: localStorage.getItem('token'),
         profile: JSON.parse(localStorage.getItem('profile'))
       };
-    }
-    else {
-      localStorage.removeItem('profile');
-      localStorage.removeItem('token');
-      return {store: store.getState()};
     }
   },
   showLock: function(e){

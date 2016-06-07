@@ -31976,7 +31976,7 @@
 	      localStorage.setItem('token', idToken);
 	      localStorage.setItem('profile', JSON.stringify(profile));
 	      this.setState({ store: _store2.default.getState(), token: idToken, profile: profile });
-	    }.bind(this));
+	    }.bind(this)); //MIGHT NEED TO TAKE THIS OUT
 	  },
 	  render: function render() {
 	    if (!this.state.token) return _react2.default.createElement(_LoginComponent2.default, { lock: this.lock, show: this.showLock });
