@@ -31945,7 +31945,7 @@
 
 	  getInitialState: function getInitialState() {
 	    this.lock = new Auth0Lock('trDPfReklgtHuU9vMwYtEYBGTz0nuLgp', 'swolebrain.auth0.com');
-	    return getStateBasedOnAuth();
+	    return this.getStateBasedOnAuth();
 	  },
 	  getStateBasedOnAuth: function getStateBasedOnAuth() {
 	    if (!localStorage.getItem('profile') || !localStorage.getItem("token")) {
