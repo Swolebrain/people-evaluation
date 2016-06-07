@@ -31945,24 +31945,25 @@
 
 	  getInitialState: function getInitialState() {
 	    this.lock = new Auth0Lock('trDPfReklgtHuU9vMwYtEYBGTz0nuLgp', 'swolebrain.auth0.com');
-	    var prf = localStorage.getItem('profile');
-	    if (prf) {
-	      prf = JSON.parse(prf);
-	      /*console.log(new Date().getTime() );
-	      console.log(Number(prf.identities[0].expires_in));
-	      console.log(prf.issued_timestamp);
-	      console.log(new Date().getTime()/1000 < Number(prf.identities[0].expires_in) + prf.issued_timestamp/1000);*/
+	    return getStateBasedOnAuth();
+	  },
+	  getStateBasedOnAuth: function getStateBasedOnAuth() {
+	    if (!localStorage.getItem('profile') || !localStorage.getItem("token")) {
+	      return { store: _store2.default.getState() };
 	    }
-	    if (localStorage.getItem("token") && prf && new Date().getTime() / 1000 < Number(prf.identities[0].expires_in) + prf.issued_timestamp / 1000) {
+	    var prf = JSON.parse(localStorage.getItem('profile'));
+	    var token = localStorage.getItem("token");
+	    if (JSON.parse(atob(token.split(".")[1])).exp < new Date().getTime()) {
+	      console.log("token expired");
+	      localStorage.removeItem('profile');
+	      localStorage.removeItem('token');
+	      return { store: _store2.default.getState() };
+	    } else {
 	      return {
 	        store: _store2.default.getState(),
 	        token: localStorage.getItem('token'),
 	        profile: JSON.parse(localStorage.getItem('profile'))
 	      };
-	    } else {
-	      localStorage.removeItem('profile');
-	      localStorage.removeItem('token');
-	      return { store: _store2.default.getState() };
 	    }
 	  },
 	  showLock: function showLock(e) {

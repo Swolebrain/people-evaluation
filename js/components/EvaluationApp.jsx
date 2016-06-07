@@ -9,7 +9,7 @@ import store from '../store.js';
 const EvaluationApp = React.createClass({
   getInitialState: function(){
     this.lock = new Auth0Lock('trDPfReklgtHuU9vMwYtEYBGTz0nuLgp', 'swolebrain.auth0.com');
-    return getStateBasedOnAuth();
+    return this.getStateBasedOnAuth();
   },
   getStateBasedOnAuth: function(){
     if (!localStorage.getItem('profile') || !localStorage.getItem("token")){
