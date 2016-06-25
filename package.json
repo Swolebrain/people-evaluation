@@ -20,7 +20,7 @@
     "webpack": "^1.13.1"
   },
   "scripts": {
-    "publish": "webpack && git add * && git commit",
+    "publish": "webpack && git add * && git commit && git push digi master",
     "start": "webpack && http-server"
   },
   "repository": {
