@@ -28,7 +28,7 @@ store.subscribe( () => {
   });
   localStorage.setItem("state", JSON.stringify(state));
   $.ajax({
-    url: 'http://localhost:8008/api?'+data,
+    url: 'http://fvi-grad.com:8008/api?'+data,
     method: 'POST',
     headers: {
       authorization: "Bearer "+localStorage.getItem('token')
