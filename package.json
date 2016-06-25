@@ -20,7 +20,7 @@
     "webpack": "^1.13.1"
   },
   "scripts": {
-    "watch": "watchify js/auxfunctions.js -o js/dist.js -dv",
+    "publish": "webpack && git add * && git commit",
     "start": "webpack && http-server"
   },
   "repository": {
