@@ -20,7 +20,7 @@ import store from './store.js';
 //if ( localStorage && localStorage.getItem("state") )
 //  store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
 
-
+window.globalstore = store;
 const render = require('./renderfunction.jsx');
 store.subscribe(render);
 store.subscribe( () => {

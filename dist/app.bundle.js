@@ -73,6 +73,7 @@
 	//if ( localStorage && localStorage.getItem("state") )
 	//  store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
 
+	window.globalstore = _store2.default;
 	var render = __webpack_require__(199);
 	_store2.default.subscribe(render);
 	_store2.default.subscribe(function () {
@@ -142,12 +143,13 @@
 	    case 'ADD_EVAL':
 	      newState = addEval(state, action);break;
 	    case 'HYDRATE':
-	      newState = Object.assign({}, action.newState);break;
+	      newState = handleHydrate(action.newState);break;
 	    case 'REMOVE_EVAL':
 	      newState = removeEval(state, action);break;
 	    default:
 	      return state;
 	  }
+	  //console.log(newState);
 	  return newState;
 	};
 
@@ -212,6 +214,11 @@
 	    return e.name != action.employee;
 	  });
 	  return { coreValues: Object.assign({}, state.coreValues), evals: newEvals };
+	};
+
+	var handleHydrate = function handleHydrate(newState) {
+	  if (!newState.coreValues) newState.coreValues = Object.assign({}, state.coreValues);
+	  return Object.assign({}, newState);
 	};
 
 	if (module) module.exports = reducer;
@@ -31891,7 +31898,9 @@
 	      },
 	      success: function success(resp, txt, xhr) {
 	        console.log("GET response: " + resp);
-	        store.dispatch({ type: "HYDRATE", newState: JSON.parse(resp).state });
+	        var ns = JSON.parse(resp).state;
+	        if (!ns.evals || !ns.coreValues) ns = localStorage.getItem("state");
+	        if (ns.evals && ns.coreValues) store.dispatch({ type: "HYDRATE", newState: ns });
 	      }
 	    });
 	  }

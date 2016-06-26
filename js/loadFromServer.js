@@ -12,7 +12,11 @@ function loadFromServer(store){
       },
       success: function(resp, txt, xhr){
         console.log("GET response: "+resp);
-        store.dispatch({type: "HYDRATE", newState: JSON.parse(resp).state});
+        let ns = JSON.parse(resp).state;
+        if (!ns.evals || !ns.coreValues)
+          ns = localStorage.getItem("state");
+        if (ns.evals && ns.coreValues)
+          store.dispatch({type: "HYDRATE", newState: ns});
       }
     });
   }

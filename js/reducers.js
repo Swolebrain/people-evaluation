@@ -12,12 +12,13 @@ const reducer = (state = {evals: [], coreValues: coreValues}, action) => {
     case 'ADD_EVAL':
       newState = addEval(state, action); break;
     case 'HYDRATE':
-      newState = Object.assign({}, action.newState); break;
+      newState = handleHydrate(action.newState); break;
     case 'REMOVE_EVAL':
       newState = removeEval(state, action); break;
     default:
       return state;
   }
+  //console.log(newState);
   return newState;
 };
 
@@ -90,6 +91,12 @@ const removeEval = (state, action) => {
   const newEvals = state.evals.filter( (e) => e.name != action.employee );
   return {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
 };
+
+const handleHydrate = (newState) => {
+  if (!newState.coreValues)
+    newState.coreValues = Object.assign({}, state.coreValues);
+  return Object.assign({}, newState);
+}
 
 if (module)
   module.exports = reducer;
