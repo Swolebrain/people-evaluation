@@ -62,15 +62,18 @@
 	var SCInput = __webpack_require__(193);
 	var EvaluationCreator = __webpack_require__(194);
 	var EvaluationList = __webpack_require__(195);
-	var EvaluationApp = __webpack_require__(196);
+	var loadFromServer = __webpack_require__(196);
+	var EvaluationApp = __webpack_require__(197);
 
 	var $ = __webpack_require__(186);
 
 	//MAIN APPLICATION
+	var URL = 'http://fvi-grad.com:8008/api?';
 
-	if (localStorage && localStorage.getItem("state")) _store2.default.dispatch({ type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state")) });
+	//if ( localStorage && localStorage.getItem("state") )
+	//  store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
 
-	var render = __webpack_require__(198);
+	var render = __webpack_require__(199);
 	_store2.default.subscribe(render);
 	_store2.default.subscribe(function () {
 	  var state = _store2.default.getState();
@@ -80,13 +83,14 @@
 	  });
 	  localStorage.setItem("state", JSON.stringify(state));
 	  $.ajax({
-	    url: 'http://fvi-grad.com:8008/api?' + data,
+	    url: URL + data,
 	    method: 'POST',
 	    headers: {
 	      authorization: "Bearer " + localStorage.getItem('token')
 	    },
 	    success: function success(resp, txt, xhr) {
-	      console.log(resp);
+	      console.log(JSON.parse(resp));
+	      //store.dispatch({type: "HYDRATE", newState: resp.state});
 	    }
 	  });
 	});
@@ -31501,42 +31505,6 @@
 
 	exports.default = generateId;
 
-	//Object.assign polyfill
-	/*if (!Object.assign) {
-	  console.log("running Object.assign polyfill");
-	  Object.defineProperty(Object, 'assign', {
-	    enumerable: false,
-	    configurable: true,
-	    writable: true,
-	    value: function(target) {
-	      'use strict';
-	      if (target === undefined || target === null) {
-	        throw new TypeError('Cannot convert first argument to object');
-	      }
-
-	      var to = Object(target);
-	      for (var i = 1; i < arguments.length; i++) {
-	        var nextSource = arguments[i];
-	        if (nextSource === undefined || nextSource === null) {
-	          continue;
-	        }
-	        nextSource = Object(nextSource);
-
-	        var keysArray = Object.keys(nextSource);
-	        for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
-	          var nextKey = keysArray[nextIndex];
-	          var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
-	          if (desc !== undefined && desc.enumerable) {
-	            to[nextKey] = nextSource[nextKey];
-	          }
-	        }
-	      }
-	      return to;
-	    }
-	  });
-	}
-	*/
-
 /***/ },
 /* 191 */
 /***/ function(module, exports, __webpack_require__) {
@@ -31909,6 +31877,37 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var $ = __webpack_require__(186);
+	var URL = 'http://fvi-grad.com:8008/api?';
+
+	function loadFromServer(store) {
+	  if (localStorage && localStorage.getItem("profile")) {
+	    var user = JSON.parse(localStorage.getItem("profile")).upn;
+	    $.ajax({
+	      url: URL,
+	      data: { user: user },
+	      headers: {
+	        authorization: "Bearer " + localStorage.getItem('token')
+	      },
+	      success: function success(resp, txt, xhr) {
+	        console.log("GET response: " + resp);
+	        store.dispatch({ type: "HYDRATE", newState: JSON.parse(resp).state });
+	      }
+	    });
+	  }
+	}
+
+	exports.default = loadFromServer;
+
+/***/ },
+/* 197 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
 
 	var _react = __webpack_require__(20);
 
@@ -31930,13 +31929,17 @@
 
 	var _CoreValsReminder2 = _interopRequireDefault(_CoreValsReminder);
 
-	var _LoginComponent = __webpack_require__(197);
+	var _LoginComponent = __webpack_require__(198);
 
 	var _LoginComponent2 = _interopRequireDefault(_LoginComponent);
 
 	var _store = __webpack_require__(1);
 
 	var _store2 = _interopRequireDefault(_store);
+
+	var _loadFromServer = __webpack_require__(196);
+
+	var _loadFromServer2 = _interopRequireDefault(_loadFromServer);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31959,6 +31962,7 @@
 	      localStorage.removeItem('token');
 	      return { store: _store2.default.getState() };
 	    } else {
+	      (0, _loadFromServer2.default)(_store2.default);
 	      return {
 	        store: _store2.default.getState(),
 	        token: localStorage.getItem('token'),
@@ -31977,6 +31981,7 @@
 	      localStorage.setItem('token', idToken);
 	      localStorage.setItem('profile', JSON.stringify(profile));
 	      this.setState({ store: _store2.default.getState(), token: idToken, profile: profile });
+	      (0, _loadFromServer2.default)(_store2.default);
 	    }.bind(this)); //MIGHT NEED TO TAKE THIS OUT
 	  },
 	  render: function render() {
@@ -32003,7 +32008,7 @@
 	exports.default = EvaluationApp;
 
 /***/ },
-/* 197 */
+/* 198 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32012,7 +32017,7 @@
 	  value: true
 	});
 
-	var _EvaluationApp = __webpack_require__(196);
+	var _EvaluationApp = __webpack_require__(197);
 
 	var _EvaluationApp2 = _interopRequireDefault(_EvaluationApp);
 
@@ -32049,7 +32054,7 @@
 	exports.default = LoginComponent;
 
 /***/ },
-/* 198 */
+/* 199 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32062,7 +32067,7 @@
 
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 
-	var _EvaluationApp = __webpack_require__(196);
+	var _EvaluationApp = __webpack_require__(197);
 
 	var _EvaluationApp2 = _interopRequireDefault(_EvaluationApp);
 

@@ -5,6 +5,7 @@ import EvaluationCreator from './EvaluationCreator.jsx';
 import CoreValsReminder from './CoreValsReminder.jsx';
 import LoginComponent from './LoginComponent.jsx';
 import store from '../store.js';
+import loadFromServer from '../loadFromServer.js';
 
 const EvaluationApp = React.createClass({
   getInitialState: function(){
@@ -24,6 +25,7 @@ const EvaluationApp = React.createClass({
       return {store: store.getState()};
     }
     else {
+      loadFromServer(store);
       return {
         store: store.getState(),
         token: localStorage.getItem('token'),
@@ -42,6 +44,7 @@ const EvaluationApp = React.createClass({
       localStorage.setItem('token', idToken);
       localStorage.setItem('profile', JSON.stringify(profile));
       this.setState({store: store.getState(), token: idToken, profile: profile});
+      loadFromServer(store);
     }.bind(this)); //MIGHT NEED TO TAKE THIS OUT
   },
   render: function(){
@@ -64,5 +67,6 @@ const EvaluationApp = React.createClass({
     );
   }
 });
+
 
 export default EvaluationApp;

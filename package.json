@@ -7,7 +7,8 @@
     "jquery": "^2.2.4",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "rsvp": "^3.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.9.0",
@@ -20,7 +21,7 @@
     "webpack": "^1.13.1"
   },
   "scripts": {
-    "publish": "webpack && git add * && git commit && git push digi master",
+    "deploy": "webpack && git add * && git commit && git push digi master",
     "start": "webpack && http-server"
   },
   "repository": {

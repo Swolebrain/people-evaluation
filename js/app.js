@@ -8,15 +8,18 @@ const EvaluationPanel = require('./components/EvaluationPanel.jsx');
 const SCInput = require('./components/SCInput.jsx');
 const EvaluationCreator = require('./components/EvaluationCreator.jsx');
 const EvaluationList = require('./components/EvaluationList.jsx');
+const loadFromServer = require('./loadFromServer.js');
 const EvaluationApp = require('./components/EvaluationApp.jsx');
 
 const $ = require('jquery');
 
 
 //MAIN APPLICATION
+const URL = 'http://fvi-grad.com:8008/api?';
 import store from './store.js';
-if ( localStorage && localStorage.getItem("state") )
-  store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
+//if ( localStorage && localStorage.getItem("state") )
+//  store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
+
 
 const render = require('./renderfunction.jsx');
 store.subscribe(render);
@@ -28,13 +31,14 @@ store.subscribe( () => {
   });
   localStorage.setItem("state", JSON.stringify(state));
   $.ajax({
-    url: 'http://fvi-grad.com:8008/api?'+data,
+    url: URL+data,
     method: 'POST',
     headers: {
       authorization: "Bearer "+localStorage.getItem('token')
     },
     success: function(resp, txt, xhr){
-      console.log(resp);
+      console.log(JSON.parse(resp));
+      //store.dispatch({type: "HYDRATE", newState: resp.state});
     }
   });
 });
