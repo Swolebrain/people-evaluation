@@ -18,11 +18,12 @@
     "deep-freeze": "0.0.1",
     "expect": "^1.20.1",
     "watchify": "^3.7.0",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.15.2"
   },
   "scripts": {
     "deploy": "webpack && git add * && git commit && git push digi master",
-    "start": "webpack && http-server"
+    "start": "webpack-dev-server"
   },
   "repository": {
     "type": "git",

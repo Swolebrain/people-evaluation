@@ -96,6 +96,9 @@ h1, h2, h3, h4, h5, h6{
 .sc-item > div{
   display:inline-block;
 }
+.sc-item input{
+  width: 100%;
+}
 .sc-score, .sc-weight{
   width: 15%;
 }
@@ -103,9 +106,26 @@ h1, h2, h3, h4, h5, h6{
   width: 68%;
   max-width: 240px;
 }
-.sc-item input{
+.sc-item{
   box-sizing: border-box;
   width:100%;
+  position:relative;
+}
+.sc-item:nth-child(1) .sc-score::after{
+  position:absolute;
+  content:"Score";
+  z-index:10;
+  top:-10px;
+  font-size: 0.5rem;
+  display:inline-block;
+}
+.sc-item:nth-child(1) .sc-weight::after{
+  position:absolute;
+  content:"Weight";
+  z-index:10;
+  top:-10px;
+  font-size: 0.5rem;
+  display:inline-block;
 }
 
 .block-input{
