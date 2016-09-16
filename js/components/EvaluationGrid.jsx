@@ -9,11 +9,14 @@ const EvaluationGrid = React.createClass({
   generateGrid: function(){
     var gridPositions = this.props.evals.reduce( (prev,ev) => {
         var name = ev.name;
-        var scorecard = Math.round(ev.scorecard.reduce( (p,c) => p+(c.score*c.weight) , 0));
-        var coreVals = Math.round(Object.keys(ev.coreVals).reduce( (p,c) => p+ ev.coreVals[c] , 0)/
+        var scorecard = Math.round(ev.scorecard
+          .map(sci=>({score:Number(sci.score), weight:Number(sci.weight)}) ) 
+          .reduce( (p,c) => p+(c.score*c.weight) , 0));
+        var coreVals = Math.round(Object.keys(ev.coreVals).reduce( (p,c) => p+ Number(ev.coreVals[c]) , 0)/
                                         Object.keys(ev.coreVals).length);
         return prev.concat({name, scorecard, coreVals});
     }, []);
+    console.log(gridPositions);
     //TODO: PREVENT THIS FROM INSTANTIATING EVERY TIME THE FUNCTION RUNS
     var grid = [ ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""],
           ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""] ];
@@ -49,6 +52,7 @@ const EvaluationGrid = React.createClass({
   },
   _reveal: function(){
     this.setState({visible: true});
+    console.log("Revealing overlay");
   },
   render: function(){
     var style = {marginBottom: "20px"};

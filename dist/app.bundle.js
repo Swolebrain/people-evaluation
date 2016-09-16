@@ -1258,14 +1258,17 @@
 	  generateGrid: function generateGrid() {
 	    var gridPositions = this.props.evals.reduce(function (prev, ev) {
 	      var name = ev.name;
-	      var scorecard = Math.round(ev.scorecard.reduce(function (p, c) {
+	      var scorecard = Math.round(ev.scorecard.map(function (sci) {
+	        return { score: Number(sci.score), weight: Number(sci.weight) };
+	      }).reduce(function (p, c) {
 	        return p + c.score * c.weight;
 	      }, 0));
 	      var coreVals = Math.round(Object.keys(ev.coreVals).reduce(function (p, c) {
-	        return p + ev.coreVals[c];
+	        return p + Number(ev.coreVals[c]);
 	      }, 0) / Object.keys(ev.coreVals).length);
 	      return prev.concat({ name: name, scorecard: scorecard, coreVals: coreVals });
 	    }, []);
+	    console.log(gridPositions);
 	    //TODO: PREVENT THIS FROM INSTANTIATING EVERY TIME THE FUNCTION RUNS
 	    var grid = [["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""]];
 
@@ -1313,6 +1316,7 @@
 	  },
 	  _reveal: function _reveal() {
 	    this.setState({ visible: true });
+	    console.log("Revealing overlay");
 	  },
 	  render: function render() {
 	    var style = { marginBottom: "20px" };
