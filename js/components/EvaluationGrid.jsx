@@ -19,7 +19,7 @@ const EvaluationGrid = React.createClass({
           ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""] ];
 
     gridPositions.forEach( (e, idx) => {
-      let row = 10-e.scorecard;
+      var row = 10-e.scorecard;
       if (row < 0) row = 0;
       if (row > 5) row = 5;
       var col = e.coreVals-5;
@@ -27,8 +27,8 @@ const EvaluationGrid = React.createClass({
       if (col > 5) col = 5;
       grid[row][col] += e.name+'\n';
     });
-    let rows = grid.map( function(row, index){
-      let cells = row.map( (e, i) => <td key={i}> {e} </td>);
+    var rows = grid.map( function(row, index){
+      var cells = row.map( (e, i) => <td key={i}> {e} </td>);
       return (
         <tr key={index}>
           {cells}
