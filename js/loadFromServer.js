@@ -12,7 +12,9 @@ function loadFromServer(store){
       },
       success: function(resp, txt, xhr){
         console.log("GET response: "+resp);
-        let ns = JSON.parse(resp).state;
+        let serverRes = JSON.parse(resp);
+        if (!serverRes || !serverRes.user || !serverRes.state) return;
+        let ns = serverRes.state;
         if (!ns.evals || !ns.coreValues)
           ns = localStorage.getItem("state");
         if (ns.evals && ns.coreValues)
