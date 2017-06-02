@@ -1,8 +1,8 @@
+import React, {Component} from 'react';
 import EvaluationApp from './EvaluationApp.jsx';
-import React from 'react';
 
-const LoginComponent = React.createClass({
-  render: function(){
+class LoginComponent extends Component{
+  render(){
     return (
       <div className="login-page">
         <div className="form">
@@ -13,6 +13,6 @@ const LoginComponent = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default LoginComponent;

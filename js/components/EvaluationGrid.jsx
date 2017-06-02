@@ -1,12 +1,13 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 const $ = require('jquery');
 
-const EvaluationGrid = React.createClass({
-  getInitialState: function(){
-    return {visible: false};
-  },
-  generateGrid: function(){
+class EvaluationGrid extends Component{
+  constructor(props){
+    super(props);
+    this.state = {visible: false};
+  }
+  generateGrid(){
     var gridPositions = this.props.evals.reduce( (prev,ev) => {
         var name = ev.name;
         var scorecard = Math.round(ev.scorecard.reduce( (p,c) => p+(c.score*c.weight) , 0));
@@ -43,26 +44,27 @@ const EvaluationGrid = React.createClass({
         </table>
       </div>
     );
-  },
-  _hideOverlay: function(){
+  }
+  _hideOverlay(){
     this.setState({visible: false});
-  },
-  _reveal: function(){
+  }
+  _reveal(){
     this.setState({visible: true});
-  },
-  render: function(){
+  }
+  render(){
     var style = {marginBottom: "20px"};
     var overlayStyle = {height: $(document).height()};
     var overlay = <div></div>;
     if (this.state.visible){
       overlay = (
-      <div className='overlay' style={overlayStyle} onClick={this._hideOverlay}>
+      <div className='overlay' style={overlayStyle} onClick={(this._hideOverlay).bind(this)}>
         {this.generateGrid()}
       </div>);
     }
     return (
       <div>
-        <div className="btn center-block" style={style} onClick={this._reveal}>
+        <div className="btn center-block"
+          style={style} onClick={(this._reveal).bind(this)}>
           Plot Grid!
         </div>
         {overlay}
@@ -70,6 +72,6 @@ const EvaluationGrid = React.createClass({
 
     );
   }
-});
+}
 
 export default EvaluationGrid;

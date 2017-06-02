@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {Component} from 'react';
 
-const CoreValsReminder = React.createClass({
-  render: function(){
+class CoreValsReminder extends Component{
+  render(){
     var rows = [];
     for (var k in this.props.coreVals){
       rows.push(
@@ -20,6 +20,6 @@ const CoreValsReminder = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default CoreValsReminder;

@@ -141,6 +141,41 @@ h1, h2, h3, h4, h5, h6{
   display:none;
 }
 
+/* SCORECARD PANEL BOTTOM - REHIRE/LEADERSHIP */
+.employee-panel .nh-attributes{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+}
+
+.nh-attributes>div{
+  display: flex;
+  flex:1;
+  margin-top: 1rem;
+}
+
+.nh-attributes .leadership{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 1.5rem;
+}
+
+.nh-attributes .rehire{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.nh-attributes .leadership>div, .nh-attributes .rehire>div{
+  flex:1;
+  align-self: stretch;
+  z-index:10;
+}
+
 /*  BOTTOM SECTION */
 .bottom-section{
   display: flex;

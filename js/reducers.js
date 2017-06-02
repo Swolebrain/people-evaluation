@@ -10,11 +10,14 @@ const reducer = (state = {evals: [], coreValues: coreValues}, action) => {
     case 'SC_WEIGHT_CHANGE':
       newState = weightChange(state, action); break;
     case 'ADD_EVAL':
+      console.log("Add eval reducer");
       newState = addEval(state, action); break;
     case 'HYDRATE':
       newState = handleHydrate(action.newState); break;
     case 'REMOVE_EVAL':
       newState = removeEval(state, action); break;
+    case 'REHIRE_CHANGE':
+      newState = rehireChange(state, action); break;
     default:
       return state;
   }
@@ -75,13 +78,18 @@ const scoreCardChange = (state, action, which) => {
 
 //action = {type, sc: {name: str, scorecard: [{name, score, weight}] }}
 const addEval = (state, action) => {
+  console.log("hi");
   let cvScores = {};
   for (var k in state.coreValues){
     cvScores[k] = 0;
   }
-  const fullSC = Object.assign({}, action.sc, {coreVals: cvScores});
-  //console.log(state.evals);
+  const fullSC = Object.assign({},
+    action.sc,
+    {coreVals: cvScores},
+    {rehire: true},
+    {leadership: 0});
   const newEvals = state.evals.concat(fullSC);
+  console.log(newEvals);
   return {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
 };
 
@@ -96,6 +104,13 @@ const handleHydrate = (newState) => {
   if (!newState.coreValues)
     newState.coreValues = Object.assign({}, state.coreValues);
   return Object.assign({}, newState);
+}
+//action = {type, evalIndex}
+const rehireChange = (oldState, action) =>{
+  console.log("toggling rehire for employee index "+action.evalIndex);
+  let newState = JSON.parse(JSON.stringify(oldState));
+  console.log(newState);
+  newState.evals[action.evalIndex].rehire = !newState.evals[action.evalIndex].rehire;
 }
 
 if (module)

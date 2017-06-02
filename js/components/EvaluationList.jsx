@@ -1,19 +1,23 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import EvaluationPanel from './EvaluationPanel.jsx';
 import store from '../store.js';
 const PANELWIDTH = 370;
 import generateId from '../auxfunctions.js';
 
-const EvaluationList = React.createClass({
-  getInitialState: function(){
-    return {windowWidth: window.innerWidth};
-  },
-  componentDidMount: function(){
+class EvaluationList extends Component{
+  constructor(props){
+    super(props);
+    this.state = {windowWidth: window.innerWidth};
+  }
+  componentDidMount(){
     window.addEventListener("resize", (e) => this.setState({windowWidth: window.innerWidth}));
-  },
-  render: function(){
-    var numSlots = store.getState().evals.length-1;
+  }
+  render(){
+    var user = store.getState().user;
+    var isNewHorizons = typeof user != 'undefined' && user.indexOf("nhflorida.com") > 0;
+    console.log(isNewHorizons);
+    var numSlots = this.props.evals.length-1;
     if (numSlots === 0)
       var width = PANELWIDTH;
     else
@@ -25,8 +29,13 @@ const EvaluationList = React.createClass({
                   zIndex: idx,
                   transform: `perspective(2000px) rotate3d(0,1,0,${rot}deg)`};
       return (
-        <EvaluationPanel key={generateId(e.name)} name={e.name} index={idx} styleProp={styleProp}
-          scorecard={e.scorecard} coreVals={e.coreVals} />
+        <EvaluationPanel
+          key={generateId(e.name)}
+          user={user}
+          name={e.name} index={idx} styleProp={styleProp}
+          scorecard={e.scorecard} coreVals={e.coreVals}
+          leadership={isNewHorizons?e.leadership:null}
+          rehire={typeof e.rehire=="boolean"?e.rehire:false} />
         );
     });
     return (
@@ -35,6 +44,6 @@ const EvaluationList = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default EvaluationList;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import EvaluationList from './EvaluationList.jsx';
 import EvaluationGrid from './EvaluationGrid.jsx';
 import EvaluationCreator from './EvaluationCreator.jsx';
@@ -7,12 +7,13 @@ import LoginComponent from './LoginComponent.jsx';
 import store from '../store.js';
 import loadFromServer from '../loadFromServer.js';
 
-const EvaluationApp = React.createClass({
-  getInitialState: function(){
+class EvaluationApp extends Component{
+  constructor(props){
+    super(props);
     this.lock = new Auth0Lock('trDPfReklgtHuU9vMwYtEYBGTz0nuLgp', 'swolebrain.auth0.com');
-    return this.getStateBasedOnAuth();
-  },
-  getStateBasedOnAuth: function(){
+    this.state =  this.getStateBasedOnAuth();
+  }
+  getStateBasedOnAuth(){
     if (!localStorage.getItem('profile') || !localStorage.getItem("token")){
       return {store: store.getState()};
     }
@@ -32,8 +33,8 @@ const EvaluationApp = React.createClass({
         profile: JSON.parse(localStorage.getItem('profile'))
       };
     }
-  },
-  showLock: function(e){
+  }
+  showLock(e){
     e.preventDefault();
     this.lock.show({popup: false}, function(err, profile, idToken){
       if (err){
@@ -46,11 +47,11 @@ const EvaluationApp = React.createClass({
       this.setState({store: store.getState(), token: idToken, profile: profile});
       loadFromServer(store);
     }.bind(this)); //MIGHT NEED TO TAKE THIS OUT
-  },
-  render: function(){
+  }
+  render(){
     if (!this.state.token)
       return (
-        <LoginComponent lock={this.lock} show={this.showLock}/>
+        <LoginComponent lock={this.lock} show={(this.showLock).bind(this)}/>
       );
     return (
       <div>
@@ -66,7 +67,7 @@ const EvaluationApp = React.createClass({
 
     );
   }
-});
+}
 
 
 export default EvaluationApp;
