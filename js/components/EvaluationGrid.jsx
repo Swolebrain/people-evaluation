@@ -9,17 +9,20 @@ const EvaluationGrid = React.createClass({
   generateGrid: function(){
     var gridPositions = this.props.evals.reduce( (prev,ev) => {
         var name = ev.name;
-        var scorecard = Math.round(ev.scorecard.reduce( (p,c) => p+(c.score*c.weight) , 0));
-        var coreVals = Math.round(Object.keys(ev.coreVals).reduce( (p,c) => p+ ev.coreVals[c] , 0)/
+        var scorecard = Math.round(ev.scorecard
+          .map(sci=>({score:Number(sci.score), weight:Number(sci.weight)}) ) 
+          .reduce( (p,c) => p+(c.score*c.weight) , 0));
+        var coreVals = Math.round(Object.keys(ev.coreVals).reduce( (p,c) => p+ Number(ev.coreVals[c]) , 0)/
                                         Object.keys(ev.coreVals).length);
         return prev.concat({name, scorecard, coreVals});
     }, []);
+    console.log(gridPositions);
     //TODO: PREVENT THIS FROM INSTANTIATING EVERY TIME THE FUNCTION RUNS
     var grid = [ ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""],
           ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""] ];
 
     gridPositions.forEach( (e, idx) => {
-      let row = 10-e.scorecard;
+      var row = 10-e.scorecard;
       if (row < 0) row = 0;
       if (row > 5) row = 5;
       var col = e.coreVals-5;
@@ -27,8 +30,8 @@ const EvaluationGrid = React.createClass({
       if (col > 5) col = 5;
       grid[row][col] += e.name+'\n';
     });
-    let rows = grid.map( function(row, index){
-      let cells = row.map( (e, i) => <td key={i}> {e} </td>);
+    var rows = grid.map( function(row, index){
+      var cells = row.map( (e, i) => <td key={i}> {e} </td>);
       return (
         <tr key={index}>
           {cells}
@@ -49,6 +52,7 @@ const EvaluationGrid = React.createClass({
   },
   _reveal: function(){
     this.setState({visible: true});
+    console.log("Revealing overlay");
   },
   render: function(){
     var style = {marginBottom: "20px"};
