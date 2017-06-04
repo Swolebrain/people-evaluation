@@ -23,7 +23,7 @@
     "webpack-dev-server": "^1.15.2"
   },
   "scripts": {
-    "deploy": "webpack && git add * && git commit && git push digi master",
+    "deploy": "webpack && git add * && git commit && git push nhdigi new-horizons",
     "start": "webpack-dev-server",
     "watch": "webpack --watch"
   },
