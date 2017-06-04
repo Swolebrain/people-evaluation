@@ -40784,7 +40784,7 @@
 
 	    _this.toggleSwitch = function (e) {
 	      //this.setState({toggled: !this.state.toggled})
-	      var newVal = _this.props.item.score == "0" ? 1 : 0;
+	      var newVal = _this.props.item.score === "0" ? 1 : 0;
 	      console.log("toggling switch: " + newVal);
 	      _store2.default.dispatch({ type: 'SC_SCORE_CHANGE',
 	        employee: _this.props.employee,
@@ -40799,7 +40799,7 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(_Toggle2.default, { label: this.props.item.name,
-	        toggled: this.props.item.score == 1,
+	        toggled: this.props.item.score === "1",
 	        onClick: this.toggleSwitch });
 	    }
 	  }]);
