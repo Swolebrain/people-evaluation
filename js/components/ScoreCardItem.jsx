@@ -25,10 +25,7 @@ class ScoreCardItem extends Component{
         <div className="sc-score">
           <input type="number" value={this.props.item.score} onChange={this._handleSCScoreChange} />
         </div>
-        <div className="sc-weight">
-          <input type="number" min="0" max="1" step="0.1"
-          value={this.props.item.weight} onChange={this._handleSCWeightChange} />
-        </div>
+        
       </div>
     );
   }

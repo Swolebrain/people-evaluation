@@ -10,11 +10,21 @@ class EvaluationGrid extends Component{
   generateGrid =()=>{
     var gridPositions = this.props.evals.reduce( (prev,ev) => {
         var name = ev.name;
-        var scorecard = Math.round(ev.scorecard
-          .map(sci=>({score:Number(sci.score), weight:Number(sci.weight)}) )
-          .reduce( (p,c) => p+(c.score*c.weight) , 0));
+        var scorecard = ev.scorecard
+          .filter((e,i)=>i<=3)
+          .map(sci=>Number(sci.score) )
+          .reduce( (p,c) => p+c );
+        var leadership = ev.scorecard
+          .filter((e,i)=>i>3)
+          .map(sci=>Number(sci.score) )
+          .reduce( (p,c) => p+c );
+
         var coreVals = Math.round(Object.keys(ev.coreVals).reduce( (p,c) => p+ Number(ev.coreVals[c]) , 0)/
-                                        Object.keys(ev.coreVals).length);
+                                        Object.keys(ev.coreVals).length-1);
+
+        // console.log(leadership);
+        scorecard = Math.round((scorecard + leadership)/5)-1;
+        console.log(scorecard);
         return prev.concat({name, scorecard, coreVals});
     }, []);
     console.log(gridPositions);
@@ -23,12 +33,12 @@ class EvaluationGrid extends Component{
           ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""] ];
 
     gridPositions.forEach( (e, idx) => {
-      var row = 10-e.scorecard;
-      if (row < 0) row = 0;
-      if (row > 5) row = 5;
-      var col = e.coreVals-5;
+      var col = e.scorecard;
       if (col < 0) col = 0;
       if (col > 5) col = 5;
+      var row = 5-e.coreVals;
+      if (row < 0) row = 0;
+      if (row > 5) row = 5;
       grid[row][col] += e.name+'\n';
     });
     var rows = grid.map( function(row, index){
