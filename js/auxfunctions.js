@@ -3,4 +3,11 @@
 
 const generateId = (name) => name.toLowerCase().split(" ").join("-");
 
-export default generateId;
+const buildGrid = (evals) => {
+  
+}
+
+export {
+  generateId,
+  buildGrid
+};

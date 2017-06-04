@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ScoreCardItem from './ScoreCardItem.jsx';
 import LeadershipWidget from './LeadershipWidget.jsx';
-import generateId from '../auxfunctions.js';
+import {generateId} from '../auxfunctions.js';
 
 class ScoreCardPanel extends Component{
   render(){

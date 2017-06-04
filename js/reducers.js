@@ -12,13 +12,17 @@ const reducer = (state = {evals: [], coreValues: coreValues}, action) => {
     case 'ADD_EVAL':
       newState = addEval(state, action); break;
     case 'HYDRATE':
-      newState = handleHydrate(action.newState); break;
+      newState = handleHydrate(state, action); break;
     case 'REMOVE_EVAL':
       newState = removeEval(state, action); break;
+    case 'ADMIN_HYDRATE':
+      console.log('CALLING ADMIN HYDRATE');
+      newState = hydrateOtherManagers(state, action);
+      break;
     default:
       return state;
   }
-  //console.log(newState);
+  console.log(newState);
   return newState;
 };
 
@@ -36,7 +40,9 @@ const handleCVC = (state, action) => {
     }
     else return evalu;
   });
-  return {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
+  let newState = {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
+  if (state.otherManagers) newState.otherManagers = JSON.parse(JSON.stringify(state.otherManagers));
+  return newState;
 };
 
 //action = {type, employee, newVal, k}
@@ -70,7 +76,9 @@ const scoreCardChange = (state, action, which) => {
       return ev;
     }
   });
-  return {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
+  let newState = {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
+  if (state.otherManagers) newState.otherManagers = JSON.parse(JSON.stringify(state.otherManagers));
+  return newState;
 };
 
 //action = {type, sc: {name: str, scorecard: [{name, score, weight}] }}
@@ -82,20 +90,33 @@ const addEval = (state, action) => {
   const fullSC = Object.assign({}, action.sc, {coreVals: cvScores});
   //console.log(state.evals);
   const newEvals = state.evals.concat(fullSC);
-  return {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
+  let newState =  {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
+  if (state.otherManagers) newState.otherManagers = JSON.parse(JSON.stringify(state.otherManagers));
+  return newState;
 };
 
 
 //action = {type, employee}
 const removeEval = (state, action) => {
   const newEvals = state.evals.filter( (e) => e.name != action.employee );
-  return {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
+  let newState= {coreValues: Object.assign({}, state.coreValues), evals: newEvals};
+  if (state.otherManagers) newState.otherManagers = JSON.parse(JSON.stringify(state.otherManagers));
+  return newState;
 };
 
-const handleHydrate = (newState) => {
-  if (!newState.coreValues)
-    newState.coreValues = Object.assign({}, state.coreValues);
-  return Object.assign({}, newState);
+const handleHydrate = (state, action) => {
+  if (!action.newState.coreValues)
+    action.newState.coreValues = Object.assign({}, state.coreValues);
+  let theNewState = Object.assign({}, action.newState);
+  if (state.otherManagers)
+    theNewState.otherManagers = state.otherManagers;
+  return theNewState;
+}
+
+const hydrateOtherManagers = (oldState, action) => {
+  let newState = JSON.parse(JSON.stringify(oldState));
+  newState.otherManagers = action.data;
+  return newState;
 }
 
 if (module)

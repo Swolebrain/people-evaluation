@@ -3,15 +3,21 @@ import ReactDOM from 'react-dom';
 import EvaluationPanel from './EvaluationPanel.jsx';
 import store from '../store.js';
 const PANELWIDTH = 370;
-import generateId from '../auxfunctions.js';
+import {generateId} from '../auxfunctions.js';
 
 class EvaluationList extends Component{
   constructor(props){
     super(props);
     this.state = {windowWidth: window.innerWidth};
   }
+  _handleResize = (e) => {
+    this.setState({windowWidth: window.innerWidth});
+  }
   componentDidMount(){
-    window.addEventListener("resize", (e) => this.setState({windowWidth: window.innerWidth}));
+    window.addEventListener("resize", this._handleResize);
+  }
+  componentWillUnmount(){
+    window.removeEventListener("resize", this._handleResize);
   }
   render(){
     var numSlots = store.getState().evals.length-1;

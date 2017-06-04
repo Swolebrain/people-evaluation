@@ -11,14 +11,17 @@ function loadFromServer(store){
         authorization: "Bearer "+localStorage.getItem('token')
       },
       success: function(resp, txt, xhr){
-        console.log("GET response: "+resp);
-        let serverRes = JSON.parse(resp);
-        if (!serverRes || !serverRes.user || !serverRes.state) return;
-        let ns = serverRes.state;
-        if (!ns.evals || !ns.coreValues)
-          ns = localStorage.getItem("state");
+        console.log("GET response: ");
+        console.log(resp);
+        if (!resp) return;
+        let individualUser = resp.payload;
+        if (!individualUser.user || !individualUser.state) return;
+        let ns = individualUser.state;
+        if (!ns.evals) ns.evals = [];
+        if (resp.type === "admin")
+          store.dispatch({type: 'ADMIN_HYDRATE', data: resp.otherManagers});
         if (ns.evals && ns.coreValues)
-          store.dispatch({type: "HYDRATE", newState: ns});
+          store.dispatch({type: "HYDRATE", newState: ns, type: resp.type});
       }
     });
   }

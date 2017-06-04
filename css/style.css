@@ -363,3 +363,29 @@ h1, h2, h3, h4, h5, h6{
 .login-page .container .info span .fa {
   color: #EF3B3A;
 }
+
+.admin-navigation{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.admin-navigation a{
+  margin: 1rem;
+}
+
+.admin-section, .admin-section h2{
+  color:white;
+  text-align: center;
+}
+
+.manager-eval{
+  display: flex;
+  flex-direction: row;
+  margin: 1rem 0;
+  justify-content: center;
+}
+
+.manager-eval > *{
+  margin: 0 1rem;
+}

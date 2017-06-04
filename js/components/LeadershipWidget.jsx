@@ -10,7 +10,7 @@ class LeadershipWidget extends Component{
   }
   toggleSwitch = (e)=>{
     //this.setState({toggled: !this.state.toggled})
-    let newVal = this.props.item.score==="0"? 1 : 0;
+    let newVal = this.props.item.score=="0"? 1 : 0;
     console.log("toggling switch: "+newVal);
     store.dispatch({type: 'SC_SCORE_CHANGE',
                   employee: this.props.employee,
@@ -20,7 +20,7 @@ class LeadershipWidget extends Component{
   render(){
     return (
       <Toggle label={this.props.item.name}
-        toggled={this.props.item.score==="1"}
+        toggled={this.props.item.score=="1"}
         onClick={this.toggleSwitch} />
     )
   }

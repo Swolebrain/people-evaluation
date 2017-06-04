@@ -7,6 +7,7 @@
     "jquery": "^2.2.4",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
+    "react-router-dom": "^4.1.1",
     "redux": "^3.5.2",
     "rsvp": "^3.2.1"
   },
