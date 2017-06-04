@@ -372,6 +372,7 @@ h1, h2, h3, h4, h5, h6{
 
 .admin-navigation a{
   margin: 1rem;
+  color:white;
 }
 
 .admin-section, .admin-section h2{
