@@ -66,6 +66,7 @@
 	var EvaluationApp = __webpack_require__(218);
 
 	var $ = __webpack_require__(207);
+	console.log("Version from 6-4");
 
 	//MAIN APPLICATION
 	var URL = 'http://fvi-grad.com:8008/api?';

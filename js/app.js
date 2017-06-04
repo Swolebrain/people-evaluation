@@ -12,6 +12,7 @@ const loadFromServer = require('./loadFromServer.js');
 const EvaluationApp = require('./components/EvaluationApp.jsx');
 
 const $ = require('jquery');
+console.log("Version from 6-4");
 
 
 //MAIN APPLICATION
