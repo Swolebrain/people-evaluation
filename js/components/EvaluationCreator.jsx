@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import store from '../store.js';
 import SCInput from './SCInput.jsx';
 
-const EvaluationCreator = React.createClass({
-  _createEval: function(){
+class EvaluationCreator extends Component{
+  _createEval = ()=>{
     let scorecard = [];
     for (var k in this.inputs){
       var txtVal = this.inputs[k].input.value;
@@ -23,17 +23,17 @@ const EvaluationCreator = React.createClass({
     };
     store.dispatch(action);
     this._reset();
-  },
-  _reset: function(){
+  }
+  _reset=()=>{
     for (var k in this.inputs){
       this.inputs[k].input.value = "";
     }
     this.name.value = "";
-  },
-  componentWillMount: function(){
+  }
+  componentWillMount = ()=>{
     this.inputs = {};
-  },
-  render: function(){
+  }
+  render(){
     var inputs = Array(6).fill(1).map( (e,i) => i ).map( (elm,idx) => {
       return (
         <SCInput key={elm} k={elm} ref={ (ref) => this.inputs[idx] = ref }/>
@@ -54,6 +54,6 @@ const EvaluationCreator = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default EvaluationCreator;

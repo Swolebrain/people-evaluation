@@ -1,31 +1,31 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import CoreValueItem from './CoreValueItem.jsx';
 import ScoreCardPanel from './ScoreCardPanel.jsx';
 import store from '../store.js';
 
-const EvaluationPanel = React.createClass({
-  componentWillMount: function(){
+class EvaluationPanel extends Component {
+  componentWillMount(){
     this.setState({hovered: false});
-  },
-  _handleMouseEnter: function(){
+  }
+  _handleMouseEnter=()=>{
     this.setState({hovered: true});
-  },
-  _handleMouseLeave: function(){
+  }
+  _handleMouseLeave=()=>{
     this.setState({hovered: false});
-  },
-  _removeEval: function(e){
+  }
+  _removeEval=(e)=>{
     store.dispatch({
       type: 'REMOVE_EVAL',
       employee: this.props.name
     });
-  },
-  shouldComponentUpdate: function(nextProps, nextState) {
+  }
+  shouldComponentUpdate(nextProps, nextState) {
     //this method is called by react whenever object receives new props
     //console.log('EvaluationPanel.shouldComponentUpdate')
     return true;
-  },
-  render: function(){
+  }
+  render(){
     var corevalz = [];
     for (var k in this.props.coreVals){
       corevalz.push( <CoreValueItem key={k} k={k}
@@ -56,6 +56,6 @@ const EvaluationPanel = React.createClass({
 
     )
   }
-});
+}
 
 export default EvaluationPanel;

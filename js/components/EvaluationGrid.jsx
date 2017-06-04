@@ -1,16 +1,17 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 const $ = require('jquery');
 
-const EvaluationGrid = React.createClass({
-  getInitialState: function(){
-    return {visible: false};
-  },
-  generateGrid: function(){
+class EvaluationGrid extends Component{
+  constructor(props){
+    super(props);
+    this.state = {visible: false};
+  }
+  generateGrid =()=>{
     var gridPositions = this.props.evals.reduce( (prev,ev) => {
         var name = ev.name;
         var scorecard = Math.round(ev.scorecard
-          .map(sci=>({score:Number(sci.score), weight:Number(sci.weight)}) ) 
+          .map(sci=>({score:Number(sci.score), weight:Number(sci.weight)}) )
           .reduce( (p,c) => p+(c.score*c.weight) , 0));
         var coreVals = Math.round(Object.keys(ev.coreVals).reduce( (p,c) => p+ Number(ev.coreVals[c]) , 0)/
                                         Object.keys(ev.coreVals).length);
@@ -46,15 +47,15 @@ const EvaluationGrid = React.createClass({
         </table>
       </div>
     );
-  },
-  _hideOverlay: function(){
+  }
+  _hideOverlay=()=>{
     this.setState({visible: false});
-  },
-  _reveal: function(){
+  }
+  _reveal=()=>{
     this.setState({visible: true});
     console.log("Revealing overlay");
-  },
-  render: function(){
+  }
+  render(){
     var style = {marginBottom: "20px"};
     var overlayStyle = {height: $(document).height()};
     var overlay = <div></div>;
@@ -74,6 +75,6 @@ const EvaluationGrid = React.createClass({
 
     );
   }
-});
+}
 
 export default EvaluationGrid;

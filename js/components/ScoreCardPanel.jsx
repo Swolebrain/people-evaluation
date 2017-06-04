@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import ScoreCardItem from './ScoreCardItem.jsx';
 import generateId from '../auxfunctions.js';
 
-const ScoreCardPanel = React.createClass({
-  render: function(){
+class ScoreCardPanel extends Component{
+  render(){
     var scoreCardItems = this.props.scorecard.map( (e) =>
       <ScoreCardItem employee={this.props.employee} item={e} key={generateId(e.name)}></ScoreCardItem>
     );
@@ -14,6 +14,6 @@ const ScoreCardPanel = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default ScoreCardPanel;

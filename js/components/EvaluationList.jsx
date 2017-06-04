@@ -1,18 +1,19 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import EvaluationPanel from './EvaluationPanel.jsx';
 import store from '../store.js';
 const PANELWIDTH = 370;
 import generateId from '../auxfunctions.js';
 
-const EvaluationList = React.createClass({
-  getInitialState: function(){
-    return {windowWidth: window.innerWidth};
-  },
-  componentDidMount: function(){
+class EvaluationList extends Component{
+  constructor(props){
+    super(props);
+    this.state = {windowWidth: window.innerWidth};
+  }
+  componentDidMount(){
     window.addEventListener("resize", (e) => this.setState({windowWidth: window.innerWidth}));
-  },
-  render: function(){
+  }
+  render(){
     var numSlots = store.getState().evals.length-1;
     if (numSlots === 0)
       var width = PANELWIDTH;
@@ -35,6 +36,6 @@ const EvaluationList = React.createClass({
       </div>
     );
   }
-});
+}
 
 export default EvaluationList;

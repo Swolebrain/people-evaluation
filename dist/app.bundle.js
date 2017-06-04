@@ -1503,6 +1503,8 @@
 	  value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(27);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -1513,100 +1515,120 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 	var $ = __webpack_require__(207);
 
-	var EvaluationGrid = _react2.default.createClass({
-	  displayName: 'EvaluationGrid',
+	var EvaluationGrid = function (_Component) {
+	  _inherits(EvaluationGrid, _Component);
 
-	  getInitialState: function getInitialState() {
-	    return { visible: false };
-	  },
-	  generateGrid: function generateGrid() {
-	    var gridPositions = this.props.evals.reduce(function (prev, ev) {
-	      var name = ev.name;
-	      var scorecard = Math.round(ev.scorecard.map(function (sci) {
-	        return { score: Number(sci.score), weight: Number(sci.weight) };
-	      }).reduce(function (p, c) {
-	        return p + c.score * c.weight;
-	      }, 0));
-	      var coreVals = Math.round(Object.keys(ev.coreVals).reduce(function (p, c) {
-	        return p + Number(ev.coreVals[c]);
-	      }, 0) / Object.keys(ev.coreVals).length);
-	      return prev.concat({ name: name, scorecard: scorecard, coreVals: coreVals });
-	    }, []);
-	    console.log(gridPositions);
-	    //TODO: PREVENT THIS FROM INSTANTIATING EVERY TIME THE FUNCTION RUNS
-	    var grid = [["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""]];
+	  function EvaluationGrid(props) {
+	    _classCallCheck(this, EvaluationGrid);
 
-	    gridPositions.forEach(function (e, idx) {
-	      var row = 10 - e.scorecard;
-	      if (row < 0) row = 0;
-	      if (row > 5) row = 5;
-	      var col = e.coreVals - 5;
-	      if (col < 0) col = 0;
-	      if (col > 5) col = 5;
-	      grid[row][col] += e.name + '\n';
-	    });
-	    var rows = grid.map(function (row, index) {
-	      var cells = row.map(function (e, i) {
+	    var _this = _possibleConstructorReturn(this, (EvaluationGrid.__proto__ || Object.getPrototypeOf(EvaluationGrid)).call(this, props));
+
+	    _this.generateGrid = function () {
+	      var gridPositions = _this.props.evals.reduce(function (prev, ev) {
+	        var name = ev.name;
+	        var scorecard = Math.round(ev.scorecard.map(function (sci) {
+	          return { score: Number(sci.score), weight: Number(sci.weight) };
+	        }).reduce(function (p, c) {
+	          return p + c.score * c.weight;
+	        }, 0));
+	        var coreVals = Math.round(Object.keys(ev.coreVals).reduce(function (p, c) {
+	          return p + Number(ev.coreVals[c]);
+	        }, 0) / Object.keys(ev.coreVals).length);
+	        return prev.concat({ name: name, scorecard: scorecard, coreVals: coreVals });
+	      }, []);
+	      console.log(gridPositions);
+	      //TODO: PREVENT THIS FROM INSTANTIATING EVERY TIME THE FUNCTION RUNS
+	      var grid = [["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""], ["", "", "", "", "", ""]];
+
+	      gridPositions.forEach(function (e, idx) {
+	        var row = 10 - e.scorecard;
+	        if (row < 0) row = 0;
+	        if (row > 5) row = 5;
+	        var col = e.coreVals - 5;
+	        if (col < 0) col = 0;
+	        if (col > 5) col = 5;
+	        grid[row][col] += e.name + '\n';
+	      });
+	      var rows = grid.map(function (row, index) {
+	        var cells = row.map(function (e, i) {
+	          return _react2.default.createElement(
+	            'td',
+	            { key: i },
+	            ' ',
+	            e,
+	            ' '
+	          );
+	        });
 	        return _react2.default.createElement(
-	          'td',
-	          { key: i },
-	          ' ',
-	          e,
-	          ' '
+	          'tr',
+	          { key: index },
+	          cells
 	        );
 	      });
 	      return _react2.default.createElement(
-	        'tr',
-	        { key: index },
-	        cells
-	      );
-	    });
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement(
-	        'table',
+	        'div',
 	        null,
 	        _react2.default.createElement(
-	          'tbody',
+	          'table',
 	          null,
-	          rows
+	          _react2.default.createElement(
+	            'tbody',
+	            null,
+	            rows
+	          )
 	        )
-	      )
-	    );
-	  },
-	  _hideOverlay: function _hideOverlay() {
-	    this.setState({ visible: false });
-	  },
-	  _reveal: function _reveal() {
-	    this.setState({ visible: true });
-	    console.log("Revealing overlay");
-	  },
-	  render: function render() {
-	    var style = { marginBottom: "20px" };
-	    var overlayStyle = { height: $(document).height() };
-	    var overlay = _react2.default.createElement('div', null);
-	    if (this.state.visible) {
-	      overlay = _react2.default.createElement(
+	      );
+	    };
+
+	    _this._hideOverlay = function () {
+	      _this.setState({ visible: false });
+	    };
+
+	    _this._reveal = function () {
+	      _this.setState({ visible: true });
+	      console.log("Revealing overlay");
+	    };
+
+	    _this.state = { visible: false };
+	    return _this;
+	  }
+
+	  _createClass(EvaluationGrid, [{
+	    key: 'render',
+	    value: function render() {
+	      var style = { marginBottom: "20px" };
+	      var overlayStyle = { height: $(document).height() };
+	      var overlay = _react2.default.createElement('div', null);
+	      if (this.state.visible) {
+	        overlay = _react2.default.createElement(
+	          'div',
+	          { className: 'overlay', style: overlayStyle, onClick: this._hideOverlay },
+	          this.generateGrid()
+	        );
+	      }
+	      return _react2.default.createElement(
 	        'div',
-	        { className: 'overlay', style: overlayStyle, onClick: this._hideOverlay },
-	        this.generateGrid()
+	        null,
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'btn center-block', style: style, onClick: this._reveal },
+	          'Plot Grid!'
+	        ),
+	        overlay
 	      );
 	    }
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'btn center-block', style: style, onClick: this._reveal },
-	        'Plot Grid!'
-	      ),
-	      overlay
-	    );
-	  }
-	});
+	  }]);
+
+	  return EvaluationGrid;
+	}(_react.Component);
 
 	exports.default = EvaluationGrid;
 
@@ -33014,47 +33036,66 @@
 	  value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(27);
 
 	var _react2 = _interopRequireDefault(_react);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var CoreValsReminder = _react2.default.createClass({
-	  displayName: "CoreValsReminder",
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  render: function render() {
-	    var rows = [];
-	    for (var k in this.props.coreVals) {
-	      rows.push(_react2.default.createElement(
-	        "li",
-	        { className: "li-pad", key: k },
-	        _react2.default.createElement(
-	          "strong",
-	          null,
-	          k,
-	          ": "
-	        ),
-	        " ",
-	        this.props.coreVals[k]
-	      ));
-	    }
-	    return _react2.default.createElement(
-	      "div",
-	      { className: "core-vals-reminder" },
-	      _react2.default.createElement(
-	        "h2",
-	        null,
-	        "Our Core Values:"
-	      ),
-	      _react2.default.createElement(
-	        "ul",
-	        null,
-	        rows
-	      )
-	    );
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CoreValsReminder = function (_Component) {
+	  _inherits(CoreValsReminder, _Component);
+
+	  function CoreValsReminder() {
+	    _classCallCheck(this, CoreValsReminder);
+
+	    return _possibleConstructorReturn(this, (CoreValsReminder.__proto__ || Object.getPrototypeOf(CoreValsReminder)).apply(this, arguments));
 	  }
-	});
+
+	  _createClass(CoreValsReminder, [{
+	    key: "render",
+	    value: function render() {
+	      var rows = [];
+	      for (var k in this.props.coreVals) {
+	        rows.push(_react2.default.createElement(
+	          "li",
+	          { className: "li-pad", key: k },
+	          _react2.default.createElement(
+	            "strong",
+	            null,
+	            k,
+	            ": "
+	          ),
+	          " ",
+	          this.props.coreVals[k]
+	        ));
+	      }
+	      return _react2.default.createElement(
+	        "div",
+	        { className: "core-vals-reminder" },
+	        _react2.default.createElement(
+	          "h2",
+	          null,
+	          "Our Core Values:"
+	        ),
+	        _react2.default.createElement(
+	          "ul",
+	          null,
+	          rows
+	        )
+	      );
+	    }
+	  }]);
+
+	  return CoreValsReminder;
+	}(_react.Component);
 
 	exports.default = CoreValsReminder;
 
@@ -33067,6 +33108,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(27);
 
@@ -33082,45 +33125,69 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var ScoreCardItem = _react2.default.createClass({
-	  displayName: 'ScoreCardItem',
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  _handleSCScoreChange: function _handleSCScoreChange(e) {
-	    _store2.default.dispatch({ type: 'SC_SCORE_CHANGE',
-	      employee: this.props.employee,
-	      newVal: e.target.value,
-	      k: this.props.item.name });
-	  },
-	  _handleSCWeightChange: function _handleSCWeightChange(e) {
-	    //TODO: ENFORCE WEIGHTS ADDING UP TO 1, WITH RED CSS BORDER
-	    _store2.default.dispatch({ type: 'SC_WEIGHT_CHANGE',
-	      employee: this.props.employee,
-	      newVal: e.target.value,
-	      k: this.props.item.name });
-	  },
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'sc-item' },
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'sc-name' },
-	        this.props.item.name
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'sc-score' },
-	        _react2.default.createElement('input', { type: 'number', value: this.props.item.score, onChange: this._handleSCScoreChange })
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'sc-weight' },
-	        _react2.default.createElement('input', { type: 'number', min: '0', max: '1', step: '0.1',
-	          value: this.props.item.weight, onChange: this._handleSCWeightChange })
-	      )
-	    );
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ScoreCardItem = function (_Component) {
+	  _inherits(ScoreCardItem, _Component);
+
+	  function ScoreCardItem() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, ScoreCardItem);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ScoreCardItem.__proto__ || Object.getPrototypeOf(ScoreCardItem)).call.apply(_ref, [this].concat(args))), _this), _this._handleSCScoreChange = function (e) {
+	      _store2.default.dispatch({ type: 'SC_SCORE_CHANGE',
+	        employee: _this.props.employee,
+	        newVal: e.target.value,
+	        k: _this.props.item.name });
+	    }, _this._handleSCWeightChange = function (e) {
+	      //TODO: ENFORCE WEIGHTS ADDING UP TO 1, WITH RED CSS BORDER
+	      _store2.default.dispatch({ type: 'SC_WEIGHT_CHANGE',
+	        employee: _this.props.employee,
+	        newVal: e.target.value,
+	        k: _this.props.item.name });
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
-	});
+
+	  _createClass(ScoreCardItem, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'sc-item' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'sc-name' },
+	          this.props.item.name
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'sc-score' },
+	          _react2.default.createElement('input', { type: 'number', value: this.props.item.score, onChange: this._handleSCScoreChange })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'sc-weight' },
+	          _react2.default.createElement('input', { type: 'number', min: '0', max: '1', step: '0.1',
+	            value: this.props.item.weight, onChange: this._handleSCWeightChange })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ScoreCardItem;
+	}(_react.Component);
+
 	exports.default = ScoreCardItem;
 
 /***/ }),
@@ -33132,6 +33199,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(27);
 
@@ -33151,22 +33220,39 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var ScoreCardPanel = _react2.default.createClass({
-	  displayName: 'ScoreCardPanel',
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  render: function render() {
-	    var _this = this;
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	    var scoreCardItems = this.props.scorecard.map(function (e) {
-	      return _react2.default.createElement(_ScoreCardItem2.default, { employee: _this.props.employee, item: e, key: (0, _auxfunctions2.default)(e.name) });
-	    });
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      scoreCardItems
-	    );
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ScoreCardPanel = function (_Component) {
+	  _inherits(ScoreCardPanel, _Component);
+
+	  function ScoreCardPanel() {
+	    _classCallCheck(this, ScoreCardPanel);
+
+	    return _possibleConstructorReturn(this, (ScoreCardPanel.__proto__ || Object.getPrototypeOf(ScoreCardPanel)).apply(this, arguments));
 	  }
-	});
+
+	  _createClass(ScoreCardPanel, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var scoreCardItems = this.props.scorecard.map(function (e) {
+	        return _react2.default.createElement(_ScoreCardItem2.default, { employee: _this2.props.employee, item: e, key: (0, _auxfunctions2.default)(e.name) });
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        scoreCardItems
+	      );
+	    }
+	  }]);
+
+	  return ScoreCardPanel;
+	}(_react.Component);
 
 	exports.default = ScoreCardPanel;
 
@@ -33198,6 +33284,8 @@
 	  value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(27);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -33208,26 +33296,50 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var CoreValueItem = _react2.default.createClass({
-	  displayName: 'CoreValueItem',
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  _handleCoreValChange: function _handleCoreValChange(e) {
-	    _store2.default.dispatch({
-	      type: 'COREVAL_CHANGE', employee: this.props.employee,
-	      newVal: e.target.value, k: this.props.k
-	    });
-	  },
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'li',
-	      { className: 'core-li', key: this.props.k },
-	      this.props.k,
-	      _react2.default.createElement('br', null),
-	      _react2.default.createElement('input', { type: 'number', min: '1', max: '10', value: this.props.val,
-	        keyName: this.props.k, onChange: this._handleCoreValChange })
-	    );
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CoreValueItem = function (_Component) {
+	  _inherits(CoreValueItem, _Component);
+
+	  function CoreValueItem() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, CoreValueItem);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CoreValueItem.__proto__ || Object.getPrototypeOf(CoreValueItem)).call.apply(_ref, [this].concat(args))), _this), _this._handleCoreValChange = function (e) {
+	      _store2.default.dispatch({
+	        type: 'COREVAL_CHANGE', employee: _this.props.employee,
+	        newVal: e.target.value, k: _this.props.k
+	      });
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
-	});
+
+	  _createClass(CoreValueItem, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'li',
+	        { className: 'core-li', key: this.props.k },
+	        this.props.k,
+	        _react2.default.createElement('br', null),
+	        _react2.default.createElement('input', { type: 'number', min: '1', max: '10', value: this.props.val,
+	          onChange: this._handleCoreValChange })
+	      );
+	    }
+	  }]);
+
+	  return CoreValueItem;
+	}(_react.Component);
 
 	exports.default = CoreValueItem;
 
@@ -33240,6 +33352,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(27);
 
@@ -33263,78 +33377,104 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var EvaluationPanel = _react2.default.createClass({
-	  displayName: 'EvaluationPanel',
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  componentWillMount: function componentWillMount() {
-	    this.setState({ hovered: false });
-	  },
-	  _handleMouseEnter: function _handleMouseEnter() {
-	    this.setState({ hovered: true });
-	  },
-	  _handleMouseLeave: function _handleMouseLeave() {
-	    this.setState({ hovered: false });
-	  },
-	  _removeEval: function _removeEval(e) {
-	    _store2.default.dispatch({
-	      type: 'REMOVE_EVAL',
-	      employee: this.props.name
-	    });
-	  },
-	  shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState) {
-	    //this method is called by react whenever object receives new props
-	    //console.log('EvaluationPanel.shouldComponentUpdate')
-	    return true;
-	  },
-	  render: function render() {
-	    var corevalz = [];
-	    for (var k in this.props.coreVals) {
-	      corevalz.push(_react2.default.createElement(_CoreValueItem2.default, { key: k, k: k,
-	        employee: this.props.name, val: this.props.coreVals[k] }));
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var EvaluationPanel = function (_Component) {
+	  _inherits(EvaluationPanel, _Component);
+
+	  function EvaluationPanel() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, EvaluationPanel);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
 	    }
-	    var localStyle; //style object cannot be mutated
-	    if (this.state.hovered) {
-	      //override the inherited style prop when hovered
-	      localStyle = { left: this.props.styleProp.left, zIndex: 99,
-	        transform: "scale(1.05,1.05)" };
-	    } else {
-	      localStyle = this.props.styleProp;
-	    }
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'employee-panel', style: localStyle,
-	        onMouseEnter: this._handleMouseEnter, onMouseLeave: this._handleMouseLeave },
-	      _react2.default.createElement(
-	        'span',
-	        { className: 'close-btn', onClick: this._removeEval },
-	        'X'
-	      ),
-	      _react2.default.createElement(
-	        'h1',
-	        null,
-	        this.props.name
-	      ),
-	      _react2.default.createElement(
-	        'h2',
-	        null,
-	        'Core Values'
-	      ),
-	      _react2.default.createElement(
-	        'ul',
-	        { className: 'core-values-panel' },
-	        corevalz
-	      ),
-	      _react2.default.createElement('hr', null),
-	      _react2.default.createElement(
-	        'h2',
-	        null,
-	        'Score Card'
-	      ),
-	      _react2.default.createElement(_ScoreCardPanel2.default, { employee: this.props.name,
-	        scorecard: this.props.scorecard })
-	    );
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EvaluationPanel.__proto__ || Object.getPrototypeOf(EvaluationPanel)).call.apply(_ref, [this].concat(args))), _this), _this._handleMouseEnter = function () {
+	      _this.setState({ hovered: true });
+	    }, _this._handleMouseLeave = function () {
+	      _this.setState({ hovered: false });
+	    }, _this._removeEval = function (e) {
+	      _store2.default.dispatch({
+	        type: 'REMOVE_EVAL',
+	        employee: _this.props.name
+	      });
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
-	});
+
+	  _createClass(EvaluationPanel, [{
+	    key: 'componentWillMount',
+	    value: function componentWillMount() {
+	      this.setState({ hovered: false });
+	    }
+	  }, {
+	    key: 'shouldComponentUpdate',
+	    value: function shouldComponentUpdate(nextProps, nextState) {
+	      //this method is called by react whenever object receives new props
+	      //console.log('EvaluationPanel.shouldComponentUpdate')
+	      return true;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var corevalz = [];
+	      for (var k in this.props.coreVals) {
+	        corevalz.push(_react2.default.createElement(_CoreValueItem2.default, { key: k, k: k,
+	          employee: this.props.name, val: this.props.coreVals[k] }));
+	      }
+	      var localStyle; //style object cannot be mutated
+	      if (this.state.hovered) {
+	        //override the inherited style prop when hovered
+	        localStyle = { left: this.props.styleProp.left, zIndex: 99,
+	          transform: "scale(1.05,1.05)" };
+	      } else {
+	        localStyle = this.props.styleProp;
+	      }
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'employee-panel', style: localStyle,
+	          onMouseEnter: this._handleMouseEnter, onMouseLeave: this._handleMouseLeave },
+	        _react2.default.createElement(
+	          'span',
+	          { className: 'close-btn', onClick: this._removeEval },
+	          'X'
+	        ),
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          this.props.name
+	        ),
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Core Values'
+	        ),
+	        _react2.default.createElement(
+	          'ul',
+	          { className: 'core-values-panel' },
+	          corevalz
+	        ),
+	        _react2.default.createElement('hr', null),
+	        _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Score Card'
+	        ),
+	        _react2.default.createElement(_ScoreCardPanel2.default, { employee: this.props.name,
+	          scorecard: this.props.scorecard })
+	      );
+	    }
+	  }]);
+
+	  return EvaluationPanel;
+	}(_react.Component);
 
 	exports.default = EvaluationPanel;
 
@@ -33348,6 +33488,8 @@
 	  value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(27);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -33358,19 +33500,36 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var SCInput = _react2.default.createClass({
-	  displayName: 'SCInput',
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  render: function render() {
-	    var _this = this;
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	    var cls = this.props.k != 0 ? "block-input" : "block-input";
-	    var id = 'sc-item-' + this.props.k;
-	    return _react2.default.createElement('input', { type: 'text', className: cls, id: id, ref: function ref(input) {
-	        return _this.input = input;
-	      } });
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var SCInput = function (_Component) {
+	  _inherits(SCInput, _Component);
+
+	  function SCInput() {
+	    _classCallCheck(this, SCInput);
+
+	    return _possibleConstructorReturn(this, (SCInput.__proto__ || Object.getPrototypeOf(SCInput)).apply(this, arguments));
 	  }
-	});
+
+	  _createClass(SCInput, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var cls = this.props.k != 0 ? "block-input" : "block-input";
+	      var id = 'sc-item-' + this.props.k;
+	      return _react2.default.createElement('input', { type: 'text', className: cls, id: id, ref: function ref(input) {
+	          return _this2.input = input;
+	        } });
+	    }
+	  }]);
+
+	  return SCInput;
+	}(_react.Component);
 
 	exports.default = SCInput;
 
@@ -33383,6 +33542,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(27);
 
@@ -33402,82 +33563,104 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var EvaluationCreator = _react2.default.createClass({
-	  displayName: 'EvaluationCreator',
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  _createEval: function _createEval() {
-	    var scorecard = [];
-	    for (var k in this.inputs) {
-	      var txtVal = this.inputs[k].input.value;
-	      if (txtVal.length > 0) {
-	        scorecard.push({
-	          name: txtVal,
-	          score: 0,
-	          weight: 0
-	        });
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var EvaluationCreator = function (_Component) {
+	  _inherits(EvaluationCreator, _Component);
+
+	  function EvaluationCreator() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, EvaluationCreator);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EvaluationCreator.__proto__ || Object.getPrototypeOf(EvaluationCreator)).call.apply(_ref, [this].concat(args))), _this), _this._createEval = function () {
+	      var scorecard = [];
+	      for (var k in _this.inputs) {
+	        var txtVal = _this.inputs[k].input.value;
+	        if (txtVal.length > 0) {
+	          scorecard.push({
+	            name: txtVal,
+	            score: 0,
+	            weight: 0
+	          });
+	        }
 	      }
-	    }
-	    var name = this.name.value;
-	    var action = {
-	      type: "ADD_EVAL",
-	      sc: { name: name, scorecard: scorecard }
-	    };
-	    _store2.default.dispatch(action);
-	    this._reset();
-	  },
-	  _reset: function _reset() {
-	    for (var k in this.inputs) {
-	      this.inputs[k].input.value = "";
-	    }
-	    this.name.value = "";
-	  },
-	  componentWillMount: function componentWillMount() {
-	    this.inputs = {};
-	  },
-	  render: function render() {
-	    var _this = this;
-
-	    var inputs = Array(6).fill(1).map(function (e, i) {
-	      return i;
-	    }).map(function (elm, idx) {
-	      return _react2.default.createElement(_SCInput2.default, { key: elm, k: elm, ref: function ref(_ref) {
-	          return _this.inputs[idx] = _ref;
-	        } });
-	    });
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'add-panel' },
-	      _react2.default.createElement(
-	        'h1',
-	        null,
-	        'Add Employee Evaluation'
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        null,
-	        'Employee Name: '
-	      ),
-	      _react2.default.createElement('input', { type: 'text', className: 'block-input', id: 'new-name', ref: function ref(_ref2) {
-	          return _this.name = _ref2;
-	        } }),
-	      _react2.default.createElement(
-	        'div',
-	        null,
-	        'Employee Scorecard Items: '
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        null,
-	        inputs
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'btn', onClick: this._createEval },
-	        'Create new Scorecard'
-	      )
-	    );
+	      var name = _this.name.value;
+	      var action = {
+	        type: "ADD_EVAL",
+	        sc: { name: name, scorecard: scorecard }
+	      };
+	      _store2.default.dispatch(action);
+	      _this._reset();
+	    }, _this._reset = function () {
+	      for (var k in _this.inputs) {
+	        _this.inputs[k].input.value = "";
+	      }
+	      _this.name.value = "";
+	    }, _this.componentWillMount = function () {
+	      _this.inputs = {};
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
 	  }
-	});
+
+	  _createClass(EvaluationCreator, [{
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var inputs = Array(6).fill(1).map(function (e, i) {
+	        return i;
+	      }).map(function (elm, idx) {
+	        return _react2.default.createElement(_SCInput2.default, { key: elm, k: elm, ref: function ref(_ref2) {
+	            return _this2.inputs[idx] = _ref2;
+	          } });
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'add-panel' },
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          'Add Employee Evaluation'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Employee Name: '
+	        ),
+	        _react2.default.createElement('input', { type: 'text', className: 'block-input', id: 'new-name', ref: function ref(_ref3) {
+	            return _this2.name = _ref3;
+	          } }),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          'Employee Scorecard Items: '
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          inputs
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'btn', onClick: this._createEval },
+	          'Create new Scorecard'
+	        )
+	      );
+	    }
+	  }]);
+
+	  return EvaluationCreator;
+	}(_react.Component);
 
 	exports.default = EvaluationCreator;
 
@@ -33490,6 +33673,8 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(27);
 
@@ -33513,41 +33698,59 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 	var PANELWIDTH = 370;
 
+	var EvaluationList = function (_Component) {
+	  _inherits(EvaluationList, _Component);
 
-	var EvaluationList = _react2.default.createClass({
-	  displayName: 'EvaluationList',
+	  function EvaluationList(props) {
+	    _classCallCheck(this, EvaluationList);
 
-	  getInitialState: function getInitialState() {
-	    return { windowWidth: window.innerWidth };
-	  },
-	  componentDidMount: function componentDidMount() {
-	    var _this = this;
+	    var _this = _possibleConstructorReturn(this, (EvaluationList.__proto__ || Object.getPrototypeOf(EvaluationList)).call(this, props));
 
-	    window.addEventListener("resize", function (e) {
-	      return _this.setState({ windowWidth: window.innerWidth });
-	    });
-	  },
-	  render: function render() {
-	    var numSlots = _store2.default.getState().evals.length - 1;
-	    if (numSlots === 0) var width = PANELWIDTH;else var width = (this.state.windowWidth - PANELWIDTH - 30) / numSlots;
-	    var rot = parseInt(45 * this.props.evals.length / 5); //dampen rotation the fewer elements there are
-	    var evaluationPanels = this.props.evals.map(function (e, idx, arr) {
-	      var left = Math.min(parseInt(width) * idx, PANELWIDTH * idx);
-	      var styleProp = { left: left,
-	        zIndex: idx,
-	        transform: 'perspective(2000px) rotate3d(0,1,0,' + rot + 'deg)' };
-	      return _react2.default.createElement(_EvaluationPanel2.default, { key: (0, _auxfunctions2.default)(e.name), name: e.name, index: idx, styleProp: styleProp,
-	        scorecard: e.scorecard, coreVals: e.coreVals });
-	    });
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'evaluation-list-row' },
-	      evaluationPanels
-	    );
+	    _this.state = { windowWidth: window.innerWidth };
+	    return _this;
 	  }
-	});
+
+	  _createClass(EvaluationList, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      window.addEventListener("resize", function (e) {
+	        return _this2.setState({ windowWidth: window.innerWidth });
+	      });
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var numSlots = _store2.default.getState().evals.length - 1;
+	      if (numSlots === 0) var width = PANELWIDTH;else var width = (this.state.windowWidth - PANELWIDTH - 30) / numSlots;
+	      var rot = parseInt(45 * this.props.evals.length / 5); //dampen rotation the fewer elements there are
+	      var evaluationPanels = this.props.evals.map(function (e, idx, arr) {
+	        var left = Math.min(parseInt(width) * idx, PANELWIDTH * idx);
+	        var styleProp = { left: left,
+	          zIndex: idx,
+	          transform: 'perspective(2000px) rotate3d(0,1,0,' + rot + 'deg)' };
+	        return _react2.default.createElement(_EvaluationPanel2.default, { key: (0, _auxfunctions2.default)(e.name), name: e.name, index: idx, styleProp: styleProp,
+	          scorecard: e.scorecard, coreVals: e.coreVals });
+	      });
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'evaluation-list-row' },
+	        evaluationPanels
+	      );
+	    }
+	  }]);
+
+	  return EvaluationList;
+	}(_react.Component);
 
 	exports.default = EvaluationList;
 
@@ -33596,6 +33799,8 @@
 	  value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _react = __webpack_require__(27);
 
 	var _react2 = _interopRequireDefault(_react);
@@ -33630,67 +33835,86 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var EvaluationApp = _react2.default.createClass({
-	  displayName: 'EvaluationApp',
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  getInitialState: function getInitialState() {
-	    this.lock = new Auth0Lock('trDPfReklgtHuU9vMwYtEYBGTz0nuLgp', 'swolebrain.auth0.com');
-	    return this.getStateBasedOnAuth();
-	  },
-	  getStateBasedOnAuth: function getStateBasedOnAuth() {
-	    if (!localStorage.getItem('profile') || !localStorage.getItem("token")) {
-	      return { store: _store2.default.getState() };
-	    }
-	    var prf = JSON.parse(localStorage.getItem('profile'));
-	    var token = localStorage.getItem("token");
-	    if (JSON.parse(atob(token.split(".")[1])).exp < new Date().getTime()) {
-	      console.log("token expired");
-	      localStorage.removeItem('profile');
-	      localStorage.removeItem('token');
-	      return { store: _store2.default.getState() };
-	    } else {
-	      (0, _loadFromServer2.default)(_store2.default);
-	      return {
-	        store: _store2.default.getState(),
-	        token: localStorage.getItem('token'),
-	        profile: JSON.parse(localStorage.getItem('profile'))
-	      };
-	    }
-	  },
-	  showLock: function showLock(e) {
-	    e.preventDefault();
-	    this.lock.show({ popup: false }, function (err, profile, idToken) {
-	      if (err) {
-	        alert(err);
-	        return;
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var EvaluationApp = function (_Component) {
+	  _inherits(EvaluationApp, _Component);
+
+	  function EvaluationApp(props) {
+	    _classCallCheck(this, EvaluationApp);
+
+	    var _this = _possibleConstructorReturn(this, (EvaluationApp.__proto__ || Object.getPrototypeOf(EvaluationApp)).call(this, props));
+
+	    _this.getStateBasedOnAuth = function () {
+	      if (!localStorage.getItem('profile') || !localStorage.getItem("token")) {
+	        return { store: _store2.default.getState() };
 	      }
-	      profile.issued_timestamp = new Date().getTime();
-	      localStorage.setItem('token', idToken);
-	      localStorage.setItem('profile', JSON.stringify(profile));
-	      this.setState({ store: _store2.default.getState(), token: idToken, profile: profile });
-	      (0, _loadFromServer2.default)(_store2.default);
-	    }.bind(this)); //MIGHT NEED TO TAKE THIS OUT
-	  },
-	  render: function render() {
-	    if (!this.state.token) return _react2.default.createElement(_LoginComponent2.default, { lock: this.lock, show: this.showLock });
-	    return _react2.default.createElement(
-	      'div',
-	      null,
-	      _react2.default.createElement(_EvaluationList2.default, { coreVals: _store2.default.getState().coreValues, evals: _store2.default.getState().evals }),
-	      _react2.default.createElement(
+	      var prf = JSON.parse(localStorage.getItem('profile'));
+	      var token = localStorage.getItem("token");
+	      if (JSON.parse(atob(token.split(".")[1])).exp < new Date().getTime()) {
+	        console.log("token expired");
+	        localStorage.removeItem('profile');
+	        localStorage.removeItem('token');
+	        return { store: _store2.default.getState() };
+	      } else {
+	        (0, _loadFromServer2.default)(_store2.default);
+	        return {
+	          store: _store2.default.getState(),
+	          token: localStorage.getItem('token'),
+	          profile: JSON.parse(localStorage.getItem('profile'))
+	        };
+	      }
+	    };
+
+	    _this.showLock = function (e) {
+	      e.preventDefault();
+	      _this.lock.show({ popup: false }, function (err, profile, idToken) {
+	        if (err) {
+	          alert(err);
+	          return;
+	        }
+	        profile.issued_timestamp = new Date().getTime();
+	        localStorage.setItem('token', idToken);
+	        localStorage.setItem('profile', JSON.stringify(profile));
+	        this.setState({ store: _store2.default.getState(), token: idToken, profile: profile });
+	        (0, _loadFromServer2.default)(_store2.default);
+	      }.bind(_this)); //MIGHT NEED TO TAKE THIS OUT
+	    };
+
+	    _this.lock = new Auth0Lock('trDPfReklgtHuU9vMwYtEYBGTz0nuLgp', 'swolebrain.auth0.com');
+	    _this.state = _this.getStateBasedOnAuth();
+	    return _this;
+	  }
+
+	  _createClass(EvaluationApp, [{
+	    key: 'render',
+	    value: function render() {
+	      if (!this.state.token) return _react2.default.createElement(_LoginComponent2.default, { lock: this.lock, show: this.showLock });
+	      return _react2.default.createElement(
 	        'div',
 	        null,
-	        _react2.default.createElement(_EvaluationGrid2.default, { evals: _store2.default.getState().evals })
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'bottom-section' },
-	        _react2.default.createElement(_EvaluationCreator2.default, null),
-	        _react2.default.createElement(_CoreValsReminder2.default, { coreVals: _store2.default.getState().coreValues })
-	      )
-	    );
-	  }
-	});
+	        _react2.default.createElement(_EvaluationList2.default, { coreVals: _store2.default.getState().coreValues, evals: _store2.default.getState().evals }),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(_EvaluationGrid2.default, { evals: _store2.default.getState().evals })
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'bottom-section' },
+	          _react2.default.createElement(_EvaluationCreator2.default, null),
+	          _react2.default.createElement(_CoreValsReminder2.default, { coreVals: _store2.default.getState().coreValues })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return EvaluationApp;
+	}(_react.Component);
 
 	exports.default = EvaluationApp;
 
@@ -33704,6 +33928,8 @@
 	  value: true
 	});
 
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 	var _EvaluationApp = __webpack_require__(218);
 
 	var _EvaluationApp2 = _interopRequireDefault(_EvaluationApp);
@@ -33714,29 +33940,46 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var LoginComponent = _react2.default.createClass({
-	  displayName: 'LoginComponent',
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	  render: function render() {
-	    return _react2.default.createElement(
-	      'div',
-	      { className: 'login-page' },
-	      _react2.default.createElement(
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var LoginComponent = function (_Component) {
+	  _inherits(LoginComponent, _Component);
+
+	  function LoginComponent() {
+	    _classCallCheck(this, LoginComponent);
+
+	    return _possibleConstructorReturn(this, (LoginComponent.__proto__ || Object.getPrototypeOf(LoginComponent)).apply(this, arguments));
+	  }
+
+	  _createClass(LoginComponent, [{
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
 	        'div',
-	        { className: 'form' },
+	        { className: 'login-page' },
 	        _react2.default.createElement(
-	          'form',
-	          { className: 'login-form' },
+	          'div',
+	          { className: 'form' },
 	          _react2.default.createElement(
-	            'button',
-	            { onClick: this.props.show },
-	            'login'
+	            'form',
+	            { className: 'login-form' },
+	            _react2.default.createElement(
+	              'button',
+	              { onClick: this.props.show },
+	              'login'
+	            )
 	          )
 	        )
-	      )
-	    );
-	  }
-	});
+	      );
+	    }
+	  }]);
+
+	  return LoginComponent;
+	}(_react.Component);
 
 	exports.default = LoginComponent;
 
