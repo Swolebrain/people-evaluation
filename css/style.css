@@ -219,6 +219,7 @@ h1, h2, h3, h4, h5, h6{
 }
 .overlay table td{
   background-color: red;
+  color: white;
 }
 .overlay table tr:nth-child(1) td:nth-child(6),
 .overlay table tr:nth-child(1) td:nth-child(5),
@@ -230,6 +231,7 @@ h1, h2, h3, h4, h5, h6{
 .overlay table tr:nth-child(3) td:nth-child(5),
 .overlay table tr:nth-child(3) td:nth-child(4){
   background-color: green;
+  color: white;
 }
 .overlay table tr:nth-child(1) td:nth-child(1),
 .overlay table tr:nth-child(1) td:nth-child(2),
@@ -244,6 +246,7 @@ h1, h2, h3, h4, h5, h6{
 .overlay table tr:nth-child(5) td:nth-child(6),
 .overlay table tr:nth-child(6) td:nth-child(6){
   background-color: rgb(255,255,0);
+  color: black;
 }
 
 .overlay > div::after{
@@ -387,6 +390,12 @@ h1, h2, h3, h4, h5, h6{
   justify-content: center;
 }
 
-.manager-eval > *{
+.manager-eval > h3, .manager-eval .btn{
   margin: 0 1rem;
+}
+
+.manager-eval .overlay > div::after{
+  position:relative;
+  transform: none;
+  left: 0;
 }
