@@ -48,13 +48,14 @@ class EvaluationApp extends Component{
       profile.issued_timestamp = new Date().getTime();
       localStorage.setItem('token', idToken);
       localStorage.setItem('profile', JSON.stringify(profile));
-      this.setState({token: idToken, profile: profile});
-      loadFromServer(store);
+      const callback = ()=>this.setState({token: idToken, profile: profile});
+      loadFromServer(store, callback);
     }.bind(this)); //MIGHT NEED TO TAKE THIS OUT
   }
   renderDefaultView = () => (
     <div>
-      <EvaluationList coreVals={store.getState().coreValues} evals={store.getState().evals}  />
+      <EvaluationList coreVals={store.getState().coreValues}
+        evals={store.getState().evals}  />
       <div>
         <EvaluationGrid evals={store.getState().evals} />
       </div>
@@ -85,7 +86,6 @@ class EvaluationApp extends Component{
         <LoginComponent lock={this.lock} show={this.showLock}/>
       );
     var isAdmin = !!store.getState().otherManagers;
-    console.log("isadmin: "+isAdmin);
     if (isAdmin)
       return (
         <Router>
@@ -100,6 +100,7 @@ class EvaluationApp extends Component{
         </Router>
       );
     //not admin:
+    console.log("Rendering non admin UI");
     return this.renderDefaultView();
   }
 }

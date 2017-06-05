@@ -20,6 +20,8 @@ class EvaluationList extends Component{
     window.removeEventListener("resize", this._handleResize);
   }
   render(){
+    console.log("Rendering EvaluationList with props");
+    console.log(this.props);
     var numSlots = store.getState().evals.length-1;
     if (numSlots === 0)
       var width = PANELWIDTH;
@@ -32,8 +34,12 @@ class EvaluationList extends Component{
                   zIndex: idx,
                   transform: `perspective(2000px) rotate3d(0,1,0,${rot}deg)`};
       return (
-        <EvaluationPanel key={generateId(e.name)} name={e.name} index={idx} styleProp={styleProp}
-          scorecard={e.scorecard} coreVals={e.coreVals} />
+        <EvaluationPanel
+          key={generateId(e.name)}
+          name={e.name} index={idx}
+          styleProp={styleProp}
+          scorecard={e.scorecard}
+          coreVals={e.coreVals} />
         );
     });
     return (

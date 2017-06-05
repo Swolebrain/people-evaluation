@@ -28,7 +28,7 @@ store.subscribe( () => {
   let state = store.getState();
   let data = {
     user: JSON.parse(localStorage.getItem('profile')).upn,
-    state: state
+    state: {coreValues: state.coreValues, evals: state.evals}
   };
   localStorage.setItem("state", JSON.stringify(state));
   $.ajax({
@@ -39,7 +39,7 @@ store.subscribe( () => {
     },
     data: data,
     success: function(resp, txt, xhr){
-      console.log(JSON.parse(resp));
+      console.log(resp);
       //store.dispatch({type: "HYDRATE", newState: resp.state});
     }
   });

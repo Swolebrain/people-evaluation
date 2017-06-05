@@ -26,6 +26,7 @@ class EvaluationPanel extends Component {
     return true;
   }
   render(){
+    console.log("calling EvaluationPanel.render");
     var corevalz = [];
     for (var k in this.props.coreVals){
       corevalz.push( <CoreValueItem key={k} k={k}
