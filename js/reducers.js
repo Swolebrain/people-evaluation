@@ -108,7 +108,7 @@ const handleHydrate = (state, action) => {
   if (!action.newState.coreValues)
     action.newState.coreValues = Object.assign({}, state.coreValues);
   let theNewState = Object.assign({}, action.newState);
-  if (state.otherManagers)
+  if (action.usertype==="admin")
     theNewState.otherManagers = state.otherManagers;
   return theNewState;
 }

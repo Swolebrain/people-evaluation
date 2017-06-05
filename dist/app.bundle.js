@@ -233,7 +233,7 @@
 	var handleHydrate = function handleHydrate(state, action) {
 	  if (!action.newState.coreValues) action.newState.coreValues = Object.assign({}, state.coreValues);
 	  var theNewState = Object.assign({}, action.newState);
-	  if (state.otherManagers) theNewState.otherManagers = state.otherManagers;
+	  if (action.usertype === "admin") theNewState.otherManagers = state.otherManagers;
 	  return theNewState;
 	};
 
@@ -34670,9 +34670,6 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 	var $ = __webpack_require__(395);
 	var URL = 'http://fvi-grad.com:8008/api?';
 
@@ -34694,7 +34691,7 @@
 	        var ns = individualUser.state;
 	        if (!ns.evals) ns.evals = [];
 	        if (resp.type === "admin") store.dispatch({ type: 'ADMIN_HYDRATE', data: resp.otherManagers });
-	        if (ns.evals && ns.coreValues) store.dispatch(_defineProperty({ type: "HYDRATE", newState: ns }, 'type', resp.type));
+	        if (ns.evals && ns.coreValues) store.dispatch({ type: "HYDRATE", newState: ns, usertype: resp.type });
 	      }
 	    });
 	  }

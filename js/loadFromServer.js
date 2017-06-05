@@ -21,7 +21,7 @@ function loadFromServer(store){
         if (resp.type === "admin")
           store.dispatch({type: 'ADMIN_HYDRATE', data: resp.otherManagers});
         if (ns.evals && ns.coreValues)
-          store.dispatch({type: "HYDRATE", newState: ns, type: resp.type});
+          store.dispatch({type: "HYDRATE", newState: ns, usertype: resp.type});
       }
     });
   }
