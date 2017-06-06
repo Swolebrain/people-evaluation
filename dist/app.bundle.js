@@ -92,7 +92,7 @@
 	    },
 	    data: data,
 	    success: function success(resp, txt, xhr) {
-	      console.log(JSON.parse(resp));
+	      console.log(resp);
 	      //store.dispatch({type: "HYDRATE", newState: resp.state});
 	    }
 	  });

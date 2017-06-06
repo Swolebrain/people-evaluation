@@ -39,7 +39,7 @@ store.subscribe( () => {
     },
     data: data,
     success: function(resp, txt, xhr){
-      console.log(JSON.parse(resp));
+      console.log(resp);
       //store.dispatch({type: "HYDRATE", newState: resp.state});
     }
   });
