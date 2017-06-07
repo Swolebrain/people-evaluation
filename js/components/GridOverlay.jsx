@@ -13,7 +13,7 @@ const GridOverlay = props => {
       .map(sci=>Number(sci.score) )
       .reduce( (p,c) => p+c, 0 );
     var leadership = ev.scorecard
-      .filter((e,i)=>i>3)
+      .filter((e,i)=>i>4)
       .map(sci=>Number(sci.score) )
       .reduce( (p,c) => p+c, 0 );
 
@@ -21,7 +21,10 @@ const GridOverlay = props => {
                                     Object.keys(ev.coreVals).length-1);
 
     // console.log(leadership);
-    scorecard = Math.round((scorecard + leadership)/5)-1;
+    scorecard = Math.round((scorecard + leadership)/6)-1;
+    //add rehire question
+    console.log("Factoring in the question about "+ev.scorecard[4].name);
+    scorecard += Number(ev.scorecard[4].score);
     //console.log(scorecard);
     return prev.concat({name, scorecard, coreVals});
   }, []);

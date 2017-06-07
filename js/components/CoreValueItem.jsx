@@ -12,7 +12,7 @@ class CoreValueItem extends Component{
       return (
         <li className="core-li" key={this.props.k}>
           {this.props.k}<br />
-          <input type="number" min="1" max="10" value={this.props.val}
+        <input type="number" min="1" max="6" value={this.props.val}
            onChange={this._handleCoreValChange} />
         </li>
       );

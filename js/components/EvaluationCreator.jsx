@@ -10,6 +10,7 @@ class EvaluationCreator extends Component{
       {name: "Right seat?", score: 0, weight: 0.125},
       {name: "Right things?", score: 0, weight: 0.125},
       {name: "Right attitude?", score: 0, weight: 0.125},
+      {name: "Would you enthusiastically rehire this team member?", score: 0, weight: 0},
       {name: "Attracts new talent", score: 0, weight: 0.0833333333333333333},
       {name: "Grows and develops team through coaching", score: 0, weight: 0.0833333333333333333},
       {name: "Holds individuals accountable", score: 0, weight: 0.0833333333333333333},

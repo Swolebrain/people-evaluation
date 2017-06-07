@@ -5753,7 +5753,7 @@
 	      return p + c;
 	    }, 0);
 	    var leadership = ev.scorecard.filter(function (e, i) {
-	      return i > 3;
+	      return i > 4;
 	    }).map(function (sci) {
 	      return Number(sci.score);
 	    }).reduce(function (p, c) {
@@ -5765,7 +5765,10 @@
 	    }, 0) / Object.keys(ev.coreVals).length - 1);
 
 	    // console.log(leadership);
-	    scorecard = Math.round((scorecard + leadership) / 5) - 1;
+	    scorecard = Math.round((scorecard + leadership) / 6) - 1;
+	    //add rehire question
+	    console.log("Factoring in the question about " + ev.scorecard[4].name);
+	    scorecard += Number(ev.scorecard[4].score);
 	    //console.log(scorecard);
 	    return prev.concat({ name: name, scorecard: scorecard, coreVals: coreVals });
 	  }, []);
@@ -34253,7 +34256,7 @@
 	        { className: 'core-li', key: this.props.k },
 	        this.props.k,
 	        _react2.default.createElement('br', null),
-	        _react2.default.createElement('input', { type: 'number', min: '1', max: '10', value: this.props.val,
+	        _react2.default.createElement('input', { type: 'number', min: '1', max: '6', value: this.props.val,
 	          onChange: this._handleCoreValChange })
 	      );
 	    }
@@ -34505,7 +34508,7 @@
 	    }
 
 	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = EvaluationCreator.__proto__ || Object.getPrototypeOf(EvaluationCreator)).call.apply(_ref, [this].concat(args))), _this), _this._createEval = function () {
-	      var scorecard = [{ name: "Right person?", score: 0, weight: 0.125 }, { name: "Right seat?", score: 0, weight: 0.125 }, { name: "Right things?", score: 0, weight: 0.125 }, { name: "Right attitude?", score: 0, weight: 0.125 }, { name: "Attracts new talent", score: 0, weight: 0.0833333333333333333 }, { name: "Grows and develops team through coaching", score: 0, weight: 0.0833333333333333333 }, { name: "Holds individuals accountable", score: 0, weight: 0.0833333333333333333 }, { name: "Inspire and motivate", score: 0, weight: 0.0833333333333333333 }, { name: "Ability to build trust", score: 0, weight: 0.0833333333333333333 }, { name: "Effective communication, clear, timely good listener", score: 0, weight: 0.0833333333333333333 }];
+	      var scorecard = [{ name: "Right person?", score: 0, weight: 0.125 }, { name: "Right seat?", score: 0, weight: 0.125 }, { name: "Right things?", score: 0, weight: 0.125 }, { name: "Right attitude?", score: 0, weight: 0.125 }, { name: "Would you enthusiastically rehire this team member?", score: 0, weight: 0 }, { name: "Attracts new talent", score: 0, weight: 0.0833333333333333333 }, { name: "Grows and develops team through coaching", score: 0, weight: 0.0833333333333333333 }, { name: "Holds individuals accountable", score: 0, weight: 0.0833333333333333333 }, { name: "Inspire and motivate", score: 0, weight: 0.0833333333333333333 }, { name: "Ability to build trust", score: 0, weight: 0.0833333333333333333 }, { name: "Effective communication, clear, timely good listener", score: 0, weight: 0.0833333333333333333 }];
 	      var name = _this.name.value;
 	      var action = {
 	        type: "ADD_EVAL",
@@ -34640,6 +34643,7 @@
 	      var numSlots = _store2.default.getState().evals.length - 1;
 	      if (numSlots === 0) var width = PANELWIDTH;else var width = (this.state.windowWidth - PANELWIDTH - 30) / numSlots;
 	      var rot = parseInt(45 * this.props.evals.length / 5); //dampen rotation the fewer elements there are
+	      if (rot > 45) rot = 45;
 	      var evaluationPanels = this.props.evals.map(function (e, idx, arr) {
 	        var left = Math.min(parseInt(width) * idx, PANELWIDTH * idx);
 	        var styleProp = { left: left,
