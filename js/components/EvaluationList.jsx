@@ -28,6 +28,7 @@ class EvaluationList extends Component{
     else
       var width = (this.state.windowWidth-PANELWIDTH-30)/numSlots;
     var rot = parseInt(45*this.props.evals.length/5); //dampen rotation the fewer elements there are
+    if (rot > 45) rot = 45;
     var evaluationPanels = this.props.evals.map(function(e, idx, arr){
       var left = Math.min(parseInt(width)*idx, PANELWIDTH*idx);
       var styleProp = {left: left,
