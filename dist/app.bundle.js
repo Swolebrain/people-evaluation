@@ -5875,6 +5875,45 @@
 	        _react2.default.createElement(
 	          "h2",
 	          null,
+	          "Numeric Ratings Guide"
+	        ),
+	        _react2.default.createElement(
+	          "ul",
+	          { "class": "smaller" },
+	          _react2.default.createElement(
+	            "li",
+	            null,
+	            _react2.default.createElement(
+	              "strong",
+	              null,
+	              "5-6:"
+	            ),
+	            " all of the time/most of the time"
+	          ),
+	          _react2.default.createElement(
+	            "li",
+	            null,
+	            _react2.default.createElement(
+	              "strong",
+	              null,
+	              "3-4:"
+	            ),
+	            " some of the time"
+	          ),
+	          _react2.default.createElement(
+	            "li",
+	            null,
+	            _react2.default.createElement(
+	              "strong",
+	              null,
+	              "0-2:"
+	            ),
+	            " never/rarely"
+	          )
+	        ),
+	        _react2.default.createElement(
+	          "h2",
+	          null,
 	          "Our Core Values:"
 	        ),
 	        _react2.default.createElement(
