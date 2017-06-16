@@ -5866,7 +5866,7 @@
 	            ": "
 	          ),
 	          " ",
-	          this.props.coreVals[k]
+	          this.props.coreVals[k].toLowerCase()
 	        ));
 	      }
 	      return _react2.default.createElement(
@@ -34599,7 +34599,7 @@
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'btn', onClick: this._createEval },
-	          'Create new Scorecard'
+	          'Create New Scorecard'
 	        )
 	      );
 	    }
