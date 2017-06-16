@@ -6,7 +6,7 @@ class CoreValsReminder extends Component{
     for (var k in this.props.coreVals){
       rows.push(
         <li className="li-pad" key={k}>
-          <strong>{k}: </strong> {this.props.coreVals[k]}
+          <strong>{k}: </strong> {this.props.coreVals[k].toLowerCase()}
         </li>
       );
     }

@@ -49,7 +49,7 @@ class EvaluationCreator extends Component{
         <div>Employee Scorecard Items: </div>
 
         <div className="btn" onClick={this._createEval}>
-          Create new Scorecard
+          Create New Scorecard
         </div>
       </div>
     );
