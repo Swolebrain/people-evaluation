@@ -5,6 +5,7 @@ import EvaluationCreator from './EvaluationCreator.jsx';
 import CoreValsReminder from './CoreValsReminder.jsx';
 import LoginComponent from './LoginComponent.jsx';
 import ManagerEvaluationLoader from './ManagerEvaluationLoader.jsx';
+import GlobalManagerGrid from './GlobalManagerGrid.jsx';
 import store from '../store.js';
 import loadFromServer from '../loadFromServer.js';
 import {
@@ -48,8 +49,10 @@ class EvaluationApp extends Component{
       profile.issued_timestamp = new Date().getTime();
       localStorage.setItem('token', idToken);
       localStorage.setItem('profile', JSON.stringify(profile));
-      this.setState({token: idToken, profile: profile});
-      loadFromServer(store);
+      loadFromServer(store, ()=>{
+        console.log("setting lock state");
+        this.setState({token: idToken, profile: profile})
+      });
     }.bind(this)); //MIGHT NEED TO TAKE THIS OUT
   }
   renderDefaultView = () => (
@@ -66,6 +69,12 @@ class EvaluationApp extends Component{
   );
   renderGridLoader = ()=>(
     <div className="admin-section">
+      <GlobalManagerGrid evals={store.getState().otherManagers.reduce((acc, mgrObj)=>{
+          let {state:mgrState} = mgrObj;
+          let currentEvals = mgrState.evals;
+          if (!Array.isArray(currentEvals) || currentEvals.length === 0) return acc;
+          return [...acc, ...currentEvals];
+        }, [])} />
       <h2>Choose a Manager to view their Grid:</h2>
       {store.getState().otherManagers.map((managerObj,i)=>{
         let {user, state:managerState} = managerObj;
@@ -80,6 +89,7 @@ class EvaluationApp extends Component{
     </div>
   );
   render(){
+    console.log("hiiiiiiiiiiiiiii");
     if (!this.state || !this.state.token)
       return (
         <LoginComponent lock={this.lock} show={this.showLock}/>

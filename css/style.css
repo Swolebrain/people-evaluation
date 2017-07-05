@@ -245,6 +245,7 @@ h1, h2, h3, h4, h5, h6{
 .overlay table tr:nth-child(3) td:nth-child(6),
 .overlay table tr:nth-child(3) td:nth-child(5){
   background-color: rgb(255,255,0);
+  color: black;
 }
 
 .overlay > div::after{
@@ -254,6 +255,10 @@ h1, h2, h3, h4, h5, h6{
   position: relative;
   left: 50%;
   transform: translateX(-50%);
+}
+.admin-section .overlay > div::after{
+  left: 0;
+  transform: none;
 }
 /*
 .overlay > div::before{

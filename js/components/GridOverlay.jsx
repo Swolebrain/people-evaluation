@@ -40,7 +40,7 @@ const GridOverlay = props => {
     var row = 5-e.coreVals;
     if (row < 0) row = 0;
     if (row > 5) row = 5;
-    grid[row][col] += e.name+'\n';
+    grid[row][col] += e.name+',\n';
   });
   var rows = grid.map( function(row, index){
     var cells = row.map( (e, i) => <td key={i}> {e} </td>);

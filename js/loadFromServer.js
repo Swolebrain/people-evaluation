@@ -1,7 +1,7 @@
 const $ = require('jquery');
 const URL = 'http://fvi-grad.com:8008/api?';
 
-function loadFromServer(store){
+function loadFromServer(store, cb){
   if (localStorage && localStorage.getItem("profile")){
     let user = JSON.parse(localStorage.getItem("profile")).upn;
     $.ajax({
@@ -15,13 +15,17 @@ function loadFromServer(store){
         console.log(resp);
         if (!resp) return;
         let individualUser = resp.payload;
-        if (!individualUser.user || !individualUser.state) return;
+        console.log("made it here");
+        if ( (!individualUser.user || !individualUser.state) && resp.type != "admin" ){
+          return;
+        }
         let ns = individualUser.state;
         if (!ns.evals) ns.evals = [];
         if (resp.type === "admin")
           store.dispatch({type: 'ADMIN_HYDRATE', data: resp.otherManagers});
         if (ns.evals && ns.coreValues)
           store.dispatch({type: "HYDRATE", newState: ns, usertype: resp.type});
+        if (cb && typeof cb == 'function') cb();
       }
     });
   }
