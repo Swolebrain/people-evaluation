@@ -17,6 +17,7 @@ function loadFromServer(store, cb){
         let individualUser = resp.payload;
         console.log("made it here");
         if ( (!individualUser.user || !individualUser.state) && resp.type != "admin" ){
+          if (cb && typeof cb == 'function') cb();
           return;
         }
         let ns = individualUser.state;
