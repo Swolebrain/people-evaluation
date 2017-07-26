@@ -25,7 +25,7 @@
     "webpack-dev-server": "^1.15.2"
   },
   "scripts": {
-    "deploy": "webpack && git add * && git commit && git push nhdigi new-horizons && git push origin new-horizons",
+    "deploy": "webpack && git add * && git commit && git push nhaws new-horizons && git push origin new-horizons",
     "start": "webpack-dev-server",
     "watch": "webpack --watch"
   },
