@@ -24,7 +24,7 @@
     "webpack-dev-server": "^1.15.2"
   },
   "scripts": {
-    "deploy": "webpack && git add * && git commit && git push digi master && git push origin master",
+    "deploy": "webpack && git add * && git commit && git push fviaws master && git push origin master",
     "start": "webpack-dev-server",
     "watch": "webpack --watch"
   },
