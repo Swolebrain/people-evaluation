@@ -16,11 +16,11 @@ class ManagerEvaluationLoader extends Component{
   }
   render(){
     var style = {marginBottom: "20px"};
-    var overlayStyle = {height: window.innerHeight};
+    var overlayStyle = {minHeight: window.innerHeight};
     var overlay = <div></div>;
     if (this.state.visible){
       overlay = (
-      <div className='overlay' style={overlayStyle} onClick={this._hideOverlay}>
+      <div className='overlay manager' style={overlayStyle} onClick={this._hideOverlay}>
         <GridOverlay evals={this.props.evals} />
       </div>);
     }

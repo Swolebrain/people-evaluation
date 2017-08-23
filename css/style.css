@@ -206,6 +206,12 @@ h1, h2, h3, h4, h5, h6{
   width: 100%;
   z-index: 100;
   height: 100vh;
+  overflow: scroll;
+}
+
+.overlay.manager td{
+  font-size: 8;
+  width:140px;
 }
 
 .overlay td{
