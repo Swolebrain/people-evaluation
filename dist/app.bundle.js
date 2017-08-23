@@ -93,7 +93,9 @@
 	    data: data,
 	    success: function success(resp, txt, xhr) {
 	      console.log(resp);
-	      //store.dispatch({type: "HYDRATE", newState: resp.state});
+	    },
+	    error: function error(err) {
+	      console.log(err);
 	    }
 	  });
 	});
