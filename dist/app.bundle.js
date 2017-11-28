@@ -88,9 +88,11 @@
 	    url: API_URL,
 	    method: 'POST',
 	    headers: {
-	      authorization: "Bearer " + localStorage.getItem('token')
+	      authorization: "Bearer " + localStorage.getItem('token'),
+	      'Content-Type': 'application/json'
 	    },
-	    data: data,
+	    data: JSON.stringify(data),
+	    dataType: 'json',
 	    success: function success(resp, txt, xhr) {
 	      console.log(resp);
 	    },
