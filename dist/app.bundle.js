@@ -45198,7 +45198,6 @@
 	  _createClass(EvaluationApp, [{
 	    key: 'render',
 	    value: function render() {
-	      console.log("hiiiiiiiiiiiiiii");
 	      if (!this.state || !this.state.token) return _react2.default.createElement(_LoginComponent2.default, { lock: this.lock, show: this.showLock });
 	      var isAdmin = !!_store2.default.getState().otherManagers;
 	      console.log("isadmin: " + isAdmin);

@@ -89,7 +89,6 @@ class EvaluationApp extends Component{
     </div>
   );
   render(){
-    console.log("hiiiiiiiiiiiiiii");
     if (!this.state || !this.state.token)
       return (
         <LoginComponent lock={this.lock} show={this.showLock}/>
