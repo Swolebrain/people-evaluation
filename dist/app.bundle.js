@@ -111,7 +111,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	var URL = 'http://apps.techlaunch.io:8008/api';
+	var URL = 'https://apps.techlaunch.io:8008/api';
 
 	exports.default = {
 	  API_URL: URL
