@@ -35164,7 +35164,7 @@
 	  value: true
 	});
 	var $ = __webpack_require__(397);
-	var URL = 'http://fvi-grad.com:8008/api?';
+	var URL = 'https://apps.techlaunch.io:8008/api?';
 
 	function loadFromServer(store, cb) {
 	  if (localStorage && localStorage.getItem("profile")) {

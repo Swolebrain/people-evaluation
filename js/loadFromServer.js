@@ -1,5 +1,5 @@
 const $ = require('jquery');
-const URL = 'http://fvi-grad.com:8008/api?';
+const URL = 'https://apps.techlaunch.io:8008/api?';
 
 function loadFromServer(store, cb){
   if (localStorage && localStorage.getItem("profile")){
