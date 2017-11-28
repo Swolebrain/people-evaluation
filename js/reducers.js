@@ -1,20 +1,21 @@
 import coreValues from './data.js';
+import updateServer from './updateServer';
 
 const reducer = (state = {evals: [], coreValues: coreValues}, action) => {
   let newState;
   switch (action.type){
     case 'COREVAL_CHANGE':
-      newState = handleCVC(state, action); break;
+      newState = handleCVC(state, action); updateServer(newState); break;
     case 'SC_SCORE_CHANGE':
-      newState = scoreChange(state, action); break;
+      newState = scoreChange(state, action); updateServer(newState); break;
     case 'SC_WEIGHT_CHANGE':
-      newState = weightChange(state, action); break;
+      newState = weightChange(state, action); updateServer(newState); break;
     case 'ADD_EVAL':
-      newState = addEval(state, action); break;
+      newState = addEval(state, action); updateServer(newState); break;
     case 'HYDRATE':
       newState = handleHydrate(state, action); break;
     case 'REMOVE_EVAL':
-      newState = removeEval(state, action); break;
+      newState = removeEval(state, action); updateServer(newState); break;
     case 'ADMIN_HYDRATE':
       console.log('CALLING ADMIN HYDRATE');
       newState = hydrateOtherManagers(state, action);

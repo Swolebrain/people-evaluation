@@ -25,28 +25,5 @@ import store from './store.js';
 
 const render = require('./renderfunction.jsx');
 store.subscribe(render);
-store.subscribe( () => {
-  let state = store.getState();
-  let data = {
-    user: JSON.parse(localStorage.getItem('profile')).upn,
-    state: state
-  };
-  localStorage.setItem("state", JSON.stringify(state));
-  $.ajax({
-    url: API_URL,
-    method: 'POST',
-    headers: {
-      authorization: "Bearer "+localStorage.getItem('token'),
-      'Content-Type': 'application/json'
-    },
-    data: JSON.stringify(data),
-    dataType: 'json',
-    success: function(resp, txt, xhr){
-      console.log(resp);
-    },
-    error: function(err){
-      console.log(err);
-    }
-  });
-});
+
 render();
