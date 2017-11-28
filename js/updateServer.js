@@ -1,11 +1,10 @@
 import $ from 'jquery';
 import {API_URL} from './globals';
 
-const updateServer = (state) => {
-  if (state.otherManagers) delete state.otherManagers;
+const updateServer = ({evals, coreValues, otherManagers}) => {
   let data = {
     user: JSON.parse(localStorage.getItem('profile')).upn,
-    state: state
+    state: {evals, coreValues}
   };
   localStorage.setItem("state", JSON.stringify(state));
   $.ajax({

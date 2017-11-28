@@ -312,11 +312,14 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var updateServer = function updateServer(state) {
-	  if (state.otherManagers) delete state.otherManagers;
+	var updateServer = function updateServer(_ref) {
+	  var evals = _ref.evals,
+	      coreValues = _ref.coreValues,
+	      otherManagers = _ref.otherManagers;
+
 	  var data = {
 	    user: JSON.parse(localStorage.getItem('profile')).upn,
-	    state: state
+	    state: { evals: evals, coreValues: coreValues }
 	  };
 	  localStorage.setItem("state", JSON.stringify(state));
 	  _jquery2.default.ajax({
