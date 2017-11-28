@@ -1,3 +1,5 @@
+import {API_URL} from './globals';
+
 //COMPONENTS
 const EvaluationGrid = require('./components/EvaluationGrid.jsx');
 const CoreValsReminder = require('./components/CoreValsReminder.jsx');
@@ -16,7 +18,7 @@ console.log("Version from 6-4");
 
 
 //MAIN APPLICATION
-const URL = 'http://fvi-grad.com:8008/api';
+
 import store from './store.js';
 //if ( localStorage && localStorage.getItem("state") )
 //  store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});

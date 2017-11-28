@@ -1,11 +1,11 @@
+import {API_URL} from './globals';
 const $ = require('jquery');
-const URL = 'https://apps.techlaunch.io:8008/api?';
 
 function loadFromServer(store, cb){
   if (localStorage && localStorage.getItem("profile")){
     let user = JSON.parse(localStorage.getItem("profile")).upn;
     $.ajax({
-      url: URL,
+      url: API_URL,
       data: {user},
       headers: {
         authorization: "Bearer "+localStorage.getItem('token')
