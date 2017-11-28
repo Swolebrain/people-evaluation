@@ -1,4 +1,4 @@
-import {API_URL} from './globals';
+const API_URL = require('./globals').API_URL;
 
 //COMPONENTS
 const EvaluationGrid = require('./components/EvaluationGrid.jsx');
@@ -14,7 +14,7 @@ const loadFromServer = require('./loadFromServer.js');
 const EvaluationApp = require('./components/EvaluationApp.jsx');
 
 const $ = require('jquery');
-console.log("Version from 6-4");
+console.log("Version from 11-28");
 
 
 //MAIN APPLICATION
@@ -23,7 +23,6 @@ import store from './store.js';
 //if ( localStorage && localStorage.getItem("state") )
 //  store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
 
-window.globalstore = store;
 const render = require('./renderfunction.jsx');
 store.subscribe(render);
 store.subscribe( () => {
@@ -34,7 +33,7 @@ store.subscribe( () => {
   };
   localStorage.setItem("state", JSON.stringify(state));
   $.ajax({
-    url: URL,
+    url: API_URL,
     method: 'POST',
     headers: {
       authorization: "Bearer "+localStorage.getItem('token')
