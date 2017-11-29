@@ -6,7 +6,7 @@ const updateServer = ({evals, coreValues, otherManagers}) => {
     user: JSON.parse(localStorage.getItem('profile')).upn,
     state: {evals, coreValues}
   };
-  localStorage.setItem("state", JSON.stringify(state));
+  localStorage.setItem("state", JSON.stringify(data));
   $.ajax({
     url: API_URL,
     method: 'POST',

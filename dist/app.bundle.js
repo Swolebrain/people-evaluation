@@ -321,7 +321,7 @@
 	    user: JSON.parse(localStorage.getItem('profile')).upn,
 	    state: { evals: evals, coreValues: coreValues }
 	  };
-	  localStorage.setItem("state", JSON.stringify(state));
+	  localStorage.setItem("state", JSON.stringify(data));
 	  _jquery2.default.ajax({
 	    url: _globals.API_URL,
 	    method: 'POST',
