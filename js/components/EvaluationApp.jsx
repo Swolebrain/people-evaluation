@@ -23,20 +23,16 @@ class EvaluationApp extends Component{
 
     const prf = JSON.parse(localStorage.getItem('profile'));
     const token = localStorage.getItem("token");
-    if (token && JSON.parse(atob(token.split(".")[1])).exp < new Date().getTime()){
-      console.log("token expired");
+    if (token && JSON.parse(atob(token.split(".")[1])).exp < new Date().getTime()/1000){
+      console.log("token expired", JSON.parse(atob(token.split(".")[1])));
       localStorage.removeItem('profile');
       localStorage.removeItem('token');
       return {store: store.getState()};
     }
-    else {
-      loadFromServer(store);
-      // return {
-      //   store: store.getState(),
-      //   token: localStorage.getItem('token'),
-      //   profile: JSON.parse(localStorage.getItem('profile'))
-      // };
+    else if (token && prf){
+      loadFromServer(store, ()=>this.setState({token, profile: prf}));
     }
+    
   }
   showLock = (e) =>{
     e.preventDefault();
@@ -50,7 +46,7 @@ class EvaluationApp extends Component{
       localStorage.setItem('profile', JSON.stringify(profile));
       const callback = ()=>this.setState({token: idToken, profile: profile});
       loadFromServer(store, callback);
-    }.bind(this)); //MIGHT NEED TO TAKE THIS OUT
+    }); //MIGHT NEED TO TAKE THIS OUT
   }
   renderDefaultView = () => (
     <div>

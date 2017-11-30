@@ -12,36 +12,15 @@ const loadFromServer = require('./loadFromServer.js');
 const EvaluationApp = require('./components/EvaluationApp.jsx');
 
 const $ = require('jquery');
-console.log("Version from 6-4");
+console.log("Version from 11-29");
 
 
 //MAIN APPLICATION
-const URL = 'http://fvi-grad.com:8008/api';
 import store from './store.js';
 //if ( localStorage && localStorage.getItem("state") )
 //  store.dispatch({type: "HYDRATE", newState: JSON.parse(localStorage.getItem("state"))});
 
-window.globalstore = store;
 const render = require('./renderfunction.jsx');
 store.subscribe(render);
-store.subscribe( () => {
-  let state = store.getState();
-  let data = {
-    user: JSON.parse(localStorage.getItem('profile')).upn,
-    state: {coreValues: state.coreValues, evals: state.evals}
-  };
-  localStorage.setItem("state", JSON.stringify(state));
-  $.ajax({
-    url: URL,
-    method: 'POST',
-    headers: {
-      authorization: "Bearer "+localStorage.getItem('token')
-    },
-    data: data,
-    success: function(resp, txt, xhr){
-      console.log(resp);
-      //store.dispatch({type: "HYDRATE", newState: resp.state});
-    }
-  });
-});
+
 render();
