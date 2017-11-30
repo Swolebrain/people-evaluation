@@ -34361,9 +34361,10 @@
 
 	    _this.showLock = function (e) {
 	      e.preventDefault();
+	      var callback = function callback() {
+	        return _this.setState({ token: idToken, profile: profile });
+	      };
 	      _this.lock.show({ popup: false }, function (err, profile, idToken) {
-	        var _this2 = this;
-
 	        if (err) {
 	          alert(err);
 	          return;
@@ -34371,9 +34372,6 @@
 	        profile.issued_timestamp = new Date().getTime();
 	        localStorage.setItem('token', idToken);
 	        localStorage.setItem('profile', JSON.stringify(profile));
-	        var callback = function callback() {
-	          return _this2.setState({ token: idToken, profile: profile });
-	        };
 	        (0, _loadFromServer2.default)(_store2.default, callback);
 	      }); //MIGHT NEED TO TAKE THIS OUT
 	    };
