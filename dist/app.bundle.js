@@ -34361,14 +34361,14 @@
 
 	    _this.showLock = function (e) {
 	      e.preventDefault();
-	      var callback = function callback() {
-	        return _this.setState({ token: idToken, profile: profile });
-	      };
 	      _this.lock.show({ popup: false }, function (err, profile, idToken) {
 	        if (err) {
 	          alert(err);
 	          return;
 	        }
+	        var callback = function callback() {
+	          return _this.setState({ token: idToken, profile: profile });
+	        };
 	        profile.issued_timestamp = new Date().getTime();
 	        localStorage.setItem('token', idToken);
 	        localStorage.setItem('profile', JSON.stringify(profile));

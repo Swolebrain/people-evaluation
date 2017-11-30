@@ -36,12 +36,12 @@ class EvaluationApp extends Component{
   }
   showLock = (e) =>{
     e.preventDefault();
-    const callback = ()=>this.setState({token: idToken, profile: profile});
     this.lock.show({popup: false}, (err, profile, idToken)=> {
       if (err){
         alert(err);
         return;
       }
+      const callback = ()=>this.setState({token: idToken, profile: profile});
       profile.issued_timestamp = new Date().getTime();
       localStorage.setItem('token', idToken);
       localStorage.setItem('profile', JSON.stringify(profile));
