@@ -3,6 +3,9 @@ import store from '../store.js';
 
 class CoreValueItem extends Component{
   _handleCoreValChange=(e)=>{
+    if (!e.target.value.match(/^[0-6]$/)){
+      return;
+    }
     store.dispatch({
       type: 'COREVAL_CHANGE', employee: this.props.employee,
       newVal: e.target.value, k: this.props.k

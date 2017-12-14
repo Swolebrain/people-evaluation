@@ -4,6 +4,9 @@ import store from '../store.js';
 
 class ScoreCardItem extends Component{
   _handleSCScoreChange=(e)=>{
+    if (!e.target.value.match(/^[0-6]$/)){
+      return;
+    }
     store.dispatch({type: 'SC_SCORE_CHANGE',
                   employee: this.props.employee,
                   newVal: e.target.value,
@@ -23,7 +26,7 @@ class ScoreCardItem extends Component{
           {this.props.item.name}
         </div>
         <div className="sc-score">
-          <input type="number" value={this.props.item.score} onChange={this._handleSCScoreChange} />
+          <input type="number" max={6} value={this.props.item.score} onChange={this._handleSCScoreChange} />
         </div>
         
       </div>
