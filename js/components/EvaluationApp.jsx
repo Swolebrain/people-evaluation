@@ -53,7 +53,7 @@ class EvaluationApp extends Component{
         console.log("setting lock state");
         this.setState({token: idToken, profile: profile})
       });
-    }.bind(this)); //MIGHT NEED TO TAKE THIS OUT
+    }.bind(this)); 
   }
   renderDefaultView = () => (
     <div>
